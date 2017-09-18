@@ -39,10 +39,11 @@ const Mixin = _import('example/mixin');
 
 /* 系统管理*/
 const PermissionsManage = _import('systemSet/permissionsManage');
-/* 学生管理*/
+/* 数据管理*/
 const FinancialList = _import('financial/financialList');
 const FinancialAdd = _import('financial/financialAdd');
 const FinancialUpdate = _import('financial/financialUpdate');
+const FinancialEchart = _import('financial/financialEchart');
 
 Vue.use(Router);
 
@@ -147,13 +148,13 @@ const constantRouterMap = [
     path: '/financialManage',
     component: Layout,
     redirect: 'noredirect',
-    name: '财务管理',
+    name: '数据管理',
     // icon: '404',
     children: [
-      { path: 'financialList', component: FinancialList, name: '财务列表' },
-      { path: 'financialAdd', component: FinancialAdd, name: '财务添加' },
-      { path: 'financialUpdate', component: FinancialUpdate, name: '财务修改' },
-      
+      { path: 'financialList', component: FinancialList, name: '数据列表' },
+      { path: 'financialAdd', component: FinancialAdd, name: '数据添加' },
+      { path: 'financialUpdate', component: FinancialUpdate, name: '数据修改' },
+      { path: 'financialEchart', component: FinancialEchart, name: '图表呈现' },
     ]
   },
   {

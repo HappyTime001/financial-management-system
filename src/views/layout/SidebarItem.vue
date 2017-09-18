@@ -37,18 +37,23 @@
                
             </el-submenu>
 
-            <el-submenu index="财务信息管理" > 
+            <el-submenu index="数据管理" > 
                 <template slot="title">
-                    <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 财务信息管理
+                    <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 数据管理
                 </template>
                     <router-link  class="menu-indent" to="/financialManage/financialList" >
                         <el-menu-item index="/financialManage/financialList">
-                            财务信息列表
+                            基础数据
                         </el-menu-item>
                     </router-link>
-                    <router-link  class="menu-indent" to="/financialManage/financialAdd" >
+                    <!-- <router-link  class="menu-indent" to="/financialManage/financialAdd" >
                         <el-menu-item index="/financialManage/financialAdd">
                             财务信息添加
+                        </el-menu-item>
+                    </router-link> -->
+                    <router-link  class="menu-indent" to="/financialManage/financialEchart" >
+                        <el-menu-item index="/financialManage/financialEchart">
+                            图表呈现
                         </el-menu-item>
                     </router-link>
                     
