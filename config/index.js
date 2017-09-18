@@ -25,7 +25,7 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: new Date().getFullYear(),
+        port: new Date().getFullYear() +1,
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
