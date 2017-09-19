@@ -304,9 +304,9 @@
 </script>
 
 <style scoped>
-[v-cloak] {
+/*[v-cloak] {
   display: none;
-}
+}*/
 .component-item{
   margin-top: 100px;
 }
@@ -321,4 +321,11 @@ input::-webkit-inner-spin-button{
     margin: 0; 
 }
 input[type="number"]{-moz-appearance:textfield;}
+
+input[readonly]{
+        background-color: #eef1f6 !important;
+        border-color: #d1dbe5;
+        color: #bbb;
+        cursor: not-allowed;
+    }
 </style>

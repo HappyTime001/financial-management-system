@@ -316,13 +316,18 @@
 </script>
 
 <style scoped>
-[v-cloak] {
-  display: none;
-}
+
 .component-item{
   margin-top: 100px;
 }
 .code-part{
   margin-top: 20px;
 }
+
+input[readonly]{
+        background-color: #eef1f6;
+        border-color: #d1dbe5;
+        color: #bbb;
+        cursor: not-allowed;
+    }
 </style>

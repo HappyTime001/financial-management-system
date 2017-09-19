@@ -31,9 +31,12 @@
    
     <!-- 图表 -->
     <el-row :gutter="20" style="margin-top:20px;">
-        <div id="income">
+       <!--  <div id="income">
           
-        </div>
+        </div> -->
+
+        <div id="chartLine" style="width:100%; height:400px;"></div>
+
         <!-- <el-col :span="20">
             <div id="income">
               
@@ -61,6 +64,7 @@ var echarts = require('echarts');
 export default {
   data() {
     return {
+        list: null,
         selectOpt: [
             {
               value: 'companyIncome',
@@ -119,7 +123,14 @@ export default {
   mounted() {
         var vm = this;
         
+        vm.getList();
 
+        // vm.drawLineChart();
+
+   },
+    
+  methods: {
+    drawLineChart0(){
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('income'));
         
@@ -214,21 +225,95 @@ export default {
         // myChart.on('click', function (params) {
         //     window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
         // });
+    },
 
-   },
-    
-  methods: {
-    initTemp(){
-      let vm = this;
+    //绘制图表
+    drawLineChart: function(xAxisData,seriesData) {
+        let vm = this;
 
-      vm.temp = {
-          "chnlId": "",
-          "hisChnlId": "",
-          "chnlName": "",
-          "state": "",
-          "isavailable": "",
-          "orderNum": 10
-      }
+        vm.chartLine = echarts.init(document.getElementById('chartLine'));
+        vm.chartLine.setOption({
+            title: {
+                text: '财务情况（单位：元）'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['公司入款','线上支付', '人工存入']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: xAxisData
+                //['2011-1-1', '2012-1-2', '2013', '2014', '2015', '2016', '2017']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '公司入款',
+                    type: 'line',
+                    stack: '总量',
+                    data: seriesData[0]
+                    //[170, 100, 101, 80, 200, 230, 220]
+                },
+                {
+                    name: '线上支付',
+                    type: 'line',
+                    stack: '总量',
+                    data: seriesData[1]
+                    //[320, 332, 302, 234, 390, 330, 430]
+                },
+                {
+                    name: '人工存入',
+                    type: 'line',
+                    stack: '总量',
+                    data: seriesData[2]
+                    //[150, 232, 201, 154, 190, 100, 210]
+                }
+            ]
+        });
+    },
+    //把list数据周转成echart需要的格式
+    listData2echartData: function(){
+        let vm = this;
+        let listData = vm.list;
+        console.log('列表数据：',listData);
+
+        // let dateArray = [],                     //时间
+        //     companyIncomeValue = [],             //公司入款
+        //     onlinePayValue = [];
+        let [dateArray,companyIncomeValue,onlinePayValue,manualDepositValue,seriesData]=[[],[],[],[],[],];
+
+        for(var index in listData){
+            //时间
+            dateArray.push(listData[index]['financialDate'])
+
+            //数据
+            companyIncomeValue.push(listData[index]['companyIncome'])
+            onlinePayValue.push(listData[index]['onlinePay'])
+            manualDepositValue.push(listData[index]['manualDeposit'])
+
+        }
+        //集成在到seriesData中
+        seriesData[0] = companyIncomeValue;
+        seriesData[1] = onlinePayValue;
+        seriesData[2] = manualDepositValue;
+
+        console.log('时间：',dateArray);
+        console.log('seriesData：',seriesData);
+
+        //数据转换完，进行图表绘制，传参
+        vm.drawLineChart(dateArray,seriesData)
+
     },
     //获取列表数据
     getList() {
@@ -251,10 +336,15 @@ export default {
                if(data.resultCode == 0){ 
                     
                     vm.list = data.data.data;
-                    console.log('列表数据：',vm.list);
-                    vm.listQuery.currPage = data.data.currPage;
-                    vm.listQuery.pageSize = data.data.pageSize;
-                    vm.total = data.data.total;
+                    // console.log('列表数据：',vm.list);
+
+                    vm.listData2echartData()
+                    //数据回来 再执行图表绘制
+                    // vm.drawLineChart();
+
+                    // vm.listQuery.currPage = data.data.currPage;
+                    // vm.listQuery.pageSize = data.data.pageSize;
+                    // vm.total = data.data.total;
 
                     vm.listLoading = false;
                     
@@ -287,7 +377,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
     #income,#interest{
         width: 100%;
         height: 400px;

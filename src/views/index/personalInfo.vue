@@ -145,6 +145,12 @@ export default {
         myChart1.setOption({
             title: { text: '最近收入' },
             tooltip: {},
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
             xAxis: {
                 data: ["3月","4月","5月","6月","7月","8月"]
             },
@@ -152,7 +158,7 @@ export default {
             series: [{
                 name: '收入',
                 type: 'bar',
-                data: [800, 1200, 1360, 1100, 1100, 1800]
+                data: [8000, 12000, 13600, 11000, 11000, 18000]
             }]
         });
         // 绘制兴趣图表
@@ -223,7 +229,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
     .user_img{
         /*width: 80%;*/
         padding: 20px;
