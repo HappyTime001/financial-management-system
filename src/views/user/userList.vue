@@ -440,8 +440,8 @@ export default {
 };
 </script>
 
-<style type="text/css" scope>
+<style scoped>
   .user_permissions {
-    background-color: #fff !important;
+    background-color: #fff;
   }
 </style>
