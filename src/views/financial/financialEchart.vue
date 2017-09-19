@@ -1,0 +1,296 @@
+<template>
+  <div class="app-container">
+   
+    <!-- 搜索条件 -->
+    <div class="filter-container">
+        <el-select v-model="selectValue" placeholder="请选择">
+            <el-option v-for="item in selectOpt" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+        </el-select>
+
+          <el-date-picker
+            v-model="listQuery.queryDate"
+            format="yyyy-MM-dd"
+            :editable="dateEditable"
+            type="daterange"
+            align="right"
+            placeholder="选择日期范围"
+            :picker-options="pickerOptions2">
+          </el-date-picker>
+     
+
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+      <!-- <el-button class="filter-item" type="primary" @click="handleCreate"  icon="edit">添加</el-button>
+
+      <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>
+      <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button> -->
+     
+    </div>
+
+    
+   
+    <!-- 图表 -->
+    <el-row :gutter="20" style="margin-top:20px;">
+        <div id="income">
+          
+        </div>
+        <!-- <el-col :span="20">
+            <div id="income">
+              
+            </div>
+        </el-col>
+
+        <el-col :span="12">
+            <div id="interest">
+              
+            </div>
+        </el-col> -->
+
+    </el-row>
+
+  </div>
+</template>
+
+<script>
+// import { getList } from 'api/article';
+import {global} from 'src/global/global';
+import {api} from 'src/global/api';
+import {formatDate} from '@/filters/index';
+var echarts = require('echarts');
+
+export default {
+  data() {
+    return {
+        selectOpt: [
+            {
+              value: 'companyIncome',
+              label: '公司入款'
+            }, {
+              value: 'onlinePay',
+              label: '线上支付'
+            }, {
+              value: 'manualDeposit',
+              label: '人工存入'
+            }, {
+              value: 'rechargeTotal',
+              label: '充值合计'
+            }, 
+        ],
+        selectValue: '',
+
+        dateEditable:false,
+        pickerOptions2: {
+              shortcuts: [{
+                text: '最近一周',
+                onClick(picker) {
+                  const end = new Date();
+                  const start = new Date();
+                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                  picker.$emit('pick', [start, end]);
+                }
+              }, {
+                text: '最近一个月',
+                onClick(picker) {
+                  const end = new Date();
+                  const start = new Date();
+                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                  picker.$emit('pick', [start, end]);
+                }
+              }, {
+                text: '最近三个月',
+                onClick(picker) {
+                  const end = new Date();
+                  const start = new Date();
+                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                  picker.$emit('pick', [start, end]);
+                }
+              }]
+        },
+        listQuery: {
+            // currPage: 1,
+            // pageSize: 10,
+
+            queryDate: '',
+            
+               
+        },
+    }
+  },
+  mounted() {
+        var vm = this;
+        
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('income'));
+        
+        var colors = ['#5793f3', '#d14a61', '#675bba'];
+        // 指定图表的配置项和数据
+        var option = {
+                color: colors,
+
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
+                legend: {
+                    data:['2015 降水量', '2016 降水量']
+                },
+                grid: {
+                    top: 70,
+                    bottom: 50
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        axisLine: {
+                            onZero: false,
+                            lineStyle: {
+                                color: colors[1]
+                            }
+                        },
+                        axisPointer: {
+                            label: {
+                                formatter: function (params) {
+                                    return '降水量  ' + params.value
+                                        + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                                }
+                            }
+                        },
+                        data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]
+                    },
+                    // {
+                    //     type: 'category',
+                    //     axisTick: {
+                    //         alignWithLabel: true
+                    //     },
+                    //     axisLine: {
+                    //         onZero: false,
+                    //         lineStyle: {
+                    //             color: colors[0]
+                    //         }
+                    //     },
+                    //     axisPointer: {
+                    //         label: {
+                    //             formatter: function (params) {
+                    //                 return '降水量  ' + params.value
+                    //                     + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                    //             }
+                    //         }
+                    //     },
+                    //     data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
+                    // }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    // {
+                    //     name:'2015 降水量',
+                    //     type:'line',
+                    //     xAxisIndex: 1,
+                    //     smooth: true,
+                    //     data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                    // },
+                    {
+                        name:'2016 降水量',
+                        type:'line',
+                        smooth: true,
+                        data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+                    }
+                ]
+            };
+        
+        
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        // 处理点击事件并且跳转到相应的百度搜索页面
+        // myChart.on('click', function (params) {
+        //     window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
+        // });
+
+   },
+    
+  methods: {
+    initTemp(){
+      let vm = this;
+
+      vm.temp = {
+          "chnlId": "",
+          "hisChnlId": "",
+          "chnlName": "",
+          "state": "",
+          "isavailable": "",
+          "orderNum": 10
+      }
+    },
+    //获取列表数据
+    getList() {
+        let vm = this;
+
+        vm.listLoading = true;
+       
+        let par = vm.listQuery;
+        console.log('入参1：',par)
+        let beginDate = formatDate(par.queryDate[0]);
+        let endDate = formatDate(par.queryDate[1]);
+        par.beginDate = beginDate;
+        par.endDate = endDate;
+
+        console.log('入参2：',par)
+
+        global.get( api.financialList,{params: par },function(res){
+                //console.log('-------获取到数据：',JSON.stringify(res) )
+                let data = res.body;
+               if(data.resultCode == 0){ 
+                    
+                    vm.list = data.data.data;
+                    console.log('列表数据：',vm.list);
+                    vm.listQuery.currPage = data.data.currPage;
+                    vm.listQuery.pageSize = data.data.pageSize;
+                    vm.total = data.data.total;
+
+                    vm.listLoading = false;
+                    
+               }else{
+                    //alert(res.body.resultMsg)
+                    Message({
+                        showClose: true,
+                        message: res.body.resultMsg,
+                        type: 'error'
+                    });
+                    vm.listLoading = false;
+               }
+               
+                
+        },function(res){
+            
+            vm.listLoading = false;
+        },false)
+
+    },
+    
+    //搜索
+    handleFilter() {
+      this.getList();
+    },
+    
+
+    
+  }
+};
+</script>
+
+<style>
+    #income,#interest{
+        width: 100%;
+        height: 400px;
+    }
+
+</style>
