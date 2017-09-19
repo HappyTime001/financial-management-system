@@ -3,7 +3,7 @@
     
     <!-- 搜索条件 -->
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名" v-model="listQuery.userName">
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="账号" v-model="listQuery.userName">
       </el-input>
 
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
@@ -21,11 +21,11 @@
 
           <el-table-column align="center" label='序号' width="">
             <template scope="scope">
-              {{scope.$index}}
+              {{scope.$index+1}}
             </template>
           </el-table-column>
 
-          <el-table-column label="用户名" width="">
+          <el-table-column label="账号" width="">
             <template scope="scope">
               {{scope.row.userName}}
             </template>
@@ -68,7 +68,7 @@
     <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
           <el-form class="small-space" :model="temp" :rules="rules" ref="temp" label-position="left" label-width="80px" style='width: 430px; margin-left:50px;'>
 
-            <el-form-item label="用户名" prop="userName">
+            <el-form-item label="账号" prop="userName">
               <el-input v-model="temp.userName"></el-input>
             </el-form-item>
 
@@ -106,7 +106,7 @@
     <el-dialog title="编辑信息" :visible.sync="dialogRuleFormVisible">
           <el-form class="small-space" :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="80px" style='width: 430px; margin-left:50px;'>
 
-            <el-form-item label="用户名" prop="userName">
+            <el-form-item label="账号" prop="userName">
               <el-input v-model="ruleForm.userName"></el-input>
             </el-form-item>
 
@@ -164,18 +164,18 @@ export default {
           'userName': '',
           'password': '',
           'nickname': '',
-          'permissions': '',
+          'permissions': 3,
           'remark': ''
         },
         userRoles: [{key : 1, label : "超级管理员"}, {key : 2, label : "管理员"}, {key : 3, label : "一般会员"}],
         rules: {
           userName: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { required: true, message: '请输入账号', trigger: 'blur' },
             { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, message: '6个字符以上', trigger: 'blur' }
+            { min: 1, message: '1个字符以上', trigger: 'blur' }
           ],
           // permissions: [
           //   { required: true, message: '请选择用户权限', trigger: 'change' }
@@ -418,7 +418,7 @@ export default {
             global.post( api.addUser, vm.temp, null, function(res) {
                 console.log('插入数据成功，接口返回的数据为：',res)
                 //正式编程以下代码请放到接口成功回调函数中
-                Message({
+                vm.$message({
                     showClose: true,
                     message: '提交成功，正在刷新数据...',
                     type: 'success'
@@ -426,15 +426,21 @@ export default {
                 setTimeout(()=>{
                     vm.getList();
                 },2000)
+
+                vm.dialogFormVisible = false;
             }, function(){
                 console.log('插入数据失败')
+
+                vm.dialogFormVisible = false;
             }, false)
+
+
           } else {
             console.log('error submit!!');
             return false;
           }
         });
-        this.dialogFormVisible = false;
+        
     }
   }
 };
