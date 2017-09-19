@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="userList-container">
     
     <!-- 搜索条件 -->
     <div class="filter-container">
@@ -104,10 +104,19 @@
 
     <!-- 编辑弹窗 -->
     <el-dialog title="编辑信息" :visible.sync="dialogRuleFormVisible">
-          <el-form class="small-space" :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="80px" style='width: 430px; margin-left:50px;'>
+          <el-form class="small-space" :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="80px" style='width: 420px; margin-left:50px;'>
 
             <el-form-item label="账号" prop="userName">
               <el-input v-model="ruleForm.userName"></el-input>
+            </el-form-item>
+
+            <el-form-item label="密码" prop="password">
+              <el-input :type="passwordType" v-model="ruleForm.password"></el-input>
+            </el-form-item>
+
+            <el-form-item label="确认密码" prop="checkPass">
+                <el-input :type="passwordType" v-model="ruleForm.checkPass"></el-input>
+                <i @click="togglePasswordType" class="el-icon-information"></i>
             </el-form-item>
 
             <el-form-item label="姓名">
@@ -147,6 +156,15 @@ import md5 from 'blueimp-md5';
 
 export default {
   data() {
+    const validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm.password) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+    };
     return {
         list: null,//表格list [].push({})
         total: null,
@@ -175,6 +193,9 @@ export default {
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 1, message: '1个字符以上', trigger: 'blur' }
           ],
+          checkPass: [
+            { required: true, trigger: 'blur', validator: validatePass2 }
+          ],
           permissions: [
             { required: true, message: '请选择用户权限', trigger: 'change' }
           ]
@@ -184,6 +205,7 @@ export default {
         ruleForm: {
           'userName': '',
           'password': '',
+          'checkPass': '',
           'nickname': '',
           'permissions': '',
           'remark': ''
@@ -258,7 +280,9 @@ export default {
             if(res.body.resultCode == 0){
                 var res = res.body.data;
                 console.log('=====',res);
-                vm.ruleForm = res
+                vm.ruleForm = res;
+                //不需要显示原密码？
+                vm.ruleForm.password = '';
             }else{
                 Message({
                     showClose: true,
@@ -422,9 +446,23 @@ export default {
             console.log('error submit!!');
             return false;
           }
-        });
-        
+        });  
+    },
+    togglePasswordType() {
+        if (this.passwordType === 'text') {
+          this.passwordType = 'password'
+        } else {
+          this.passwordType = 'text'
+        }
     }
   }
 };
 </script>
+
+<style scoped>
+  .userList-container .el-icon-information {
+      position: absolute;
+      right: -18px;
+      top: 10px;
+  }
+</style>
