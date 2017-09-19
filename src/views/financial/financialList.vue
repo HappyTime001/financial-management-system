@@ -20,7 +20,17 @@
 
       <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>
       <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
-     
+      
+      <el-upload class="upload-demo" action="http://localhost:3000/api/fileUpload" 
+            :on-change="handleChange" 
+            :show-file-list="showFileList"
+            :on-progress="handleProgress"
+            :on-success="handleSuccess"
+            accept="">
+        <el-button size="middle" type="primary">excel导入</el-button>
+        <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+      </el-upload>
+
     </div>
 
     
@@ -187,6 +197,7 @@ import {formatDate} from '@/filters/index';
 export default {
   data() {
     return {
+        showFileList:false,
         dateEditable:false,
         pickerOptions2: {
               shortcuts: [{
@@ -264,17 +275,27 @@ export default {
         vm.getList();
   },
   methods: {
-    initTemp(){
-      let vm = this;
+    //excel上传
+    handleChange(file, fileList) {
+        // this.fileList3 = fileList.slice(-3);
+        // console.log(file,'--------',fileList)
+    },
+    handleProgress:function(event, file, fileList){
+        let vm = this;
+       
+        vm.listLoading = true;
+    },
+    handleSuccess:function(response, file, fileList){
+        let vm = this;
 
-      vm.temp = {
-          "chnlId": "",
-          "hisChnlId": "",
-          "chnlName": "",
-          "state": "",
-          "isavailable": "",
-          "orderNum": 10
-      }
+        vm.listLoading = false;
+        vm.$message({
+            showClose: true,
+            message: '导入成功',
+            type: 'success'
+        });
+        //上传成功 重新加载列表
+        vm.getList();
     },
     //获取列表数据
     getList() {
@@ -306,7 +327,7 @@ export default {
                     
                }else{
                     //alert(res.body.resultMsg)
-                    Message({
+                    vm.$message({
                         showClose: true,
                         message: res.body.resultMsg,
                         type: 'error'
@@ -441,7 +462,7 @@ export default {
     handleSelectionChange(val) {
         this.multipleSelection = val;
     },
-
+    //导出操作
     handleDownload() {
       let vm = this;
 
