@@ -233,49 +233,70 @@ export default {
 
         vm.chartLine = echarts.init(document.getElementById('chartLine'));
         vm.chartLine.setOption({
+            //标题组件，包含主标题和副标题。
             title: {
-                text: '财务情况（单位：元）'
+                text: '财务情况'
             },
+            //提示框组件。
             tooltip: {
                 trigger: 'axis'
             },
+            //图例组件。
             legend: {
-                data: ['公司入款','线上支付', '人工存入']
+                data: ['公司入款','线上支付', '人工存入'], //配置项可设置颜色
+                // selected: {
+                //     // 选中'系列1'
+                //     '公司入款': true,
+                //     // 不选中'系列2'
+                //     '线上支付': false,
+                //     '人工存入': false,
+                // }
             },
+            //直角坐标系内绘图网格
             grid: {
-                left: '3%',
-                right: '4%',
+                // show: true,
+                left: '10px',
+                right: '50px',
                 bottom: '3%',
                 containLabel: true
             },
+            //直角坐标系 grid 中的 x 轴
             xAxis: {
                 type: 'category',
+                name: '日期',
                 boundaryGap: false,
                 data: xAxisData
                 //['2011-1-1', '2012-1-2', '2013', '2014', '2015', '2016', '2017']
             },
+            //直角坐标系 grid 中的 y 轴
             yAxis: {
-                type: 'value'
+                type: 'value',
+                name: '金额（元）',
+                // data:[0,50,100,200,8000]
             },
+            //系列列表。每个系列通过 type 决定自己的图表类型
             series: [
                 {
                     name: '公司入款',
                     type: 'line',
-                    stack: '总量',
+                    // stack: '总量',     //数据堆叠，
+                    smooth: true,       //是否平滑曲线显示。
                     data: seriesData[0]
                     //[170, 100, 101, 80, 200, 230, 220]
                 },
                 {
                     name: '线上支付',
                     type: 'line',
-                    stack: '总量',
+                    // stack: '总量',
+                    smooth: true,
                     data: seriesData[1]
                     //[320, 332, 302, 234, 390, 330, 430]
                 },
                 {
                     name: '人工存入',
                     type: 'line',
-                    stack: '总量',
+                    // stack: '总量',
+                    smooth: true,
                     data: seriesData[2]
                     //[150, 232, 201, 154, 190, 100, 210]
                 }

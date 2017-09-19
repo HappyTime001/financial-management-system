@@ -5,6 +5,7 @@
     <div class="filter-container">
      
       <el-date-picker
+        style="vertical-align: top;"
         v-model="listQuery.queryDate"
         format="yyyy-MM-dd"
         :editable="dateEditable"
@@ -483,3 +484,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  
+    .upload-demo{
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+    }
+</style>
