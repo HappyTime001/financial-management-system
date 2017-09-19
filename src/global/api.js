@@ -48,6 +48,13 @@ export const api = {
             "financialDel": nodeApiBaseUrl+"/api/financialDel",             //财务信息删除
             "financialItemQuery": nodeApiBaseUrl+"/api/queryFinancialItem",     //财务单条详情
 
+            //用户管理接口
+            'userList' : nodeApiBaseUrl + '/api/queryUser', //用户信息列表
+            'deleteUser' : nodeApiBaseUrl + '/api/deleteUser', //删除用户
+            'queryUserItem': nodeApiBaseUrl + '/api/queryUserItem', //用户单条信息
+            'addUser': nodeApiBaseUrl + '/api/addUser', //添加新用户
+            'modifyUser': nodeApiBaseUrl + '/api/modifyUser', //添加新用户
+
             '0':url.apiUrl+'',//获取科室接口
             '1':url.apiUrl+'',
             '2':{

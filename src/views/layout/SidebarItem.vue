@@ -51,9 +51,17 @@
                             财务信息添加
                         </el-menu-item>
                     </router-link>
-                    
-                    
-               
+            </el-submenu>
+
+            <el-submenu index="用户信息管理" > 
+                <template slot="title">
+                    <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 用户信息管理
+                </template>
+                    <router-link  class="menu-indent" to="/user/userList" >
+                        <el-menu-item index="/user/userList">
+                            用户信息列表
+                        </el-menu-item>
+                    </router-link>
             </el-submenu>
 
         </template>    
