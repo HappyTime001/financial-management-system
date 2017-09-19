@@ -257,17 +257,7 @@ export default {
             console.log('-------根据id获取表单信息：',JSON.stringify(res) )
             if(res.body.resultCode == 0){
                 var res = res.body.data;
-
                 console.log('=====',res);
-
-                if(res.permissions === '1') {
-                    res.permissions = "超级管理员"
-                }else if(res.permissions === '2') {
-                    res.permissions = "管理员"
-                }else {
-                    res.permissions = "一般会员"
-                }
-
                 vm.ruleForm = res
             }else{
                 Message({
