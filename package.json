@@ -33,7 +33,7 @@
     "url": "https://github.com/lss5270/vue-element-admin"
   },
   "dependencies": {
-    "blueimp-md5": "^2.7.0",
+    "blueimp-md5": "^2.10.0",
     "codemirror": "5.26.0",
     "dropzone": "5.1.0",
     "echarts": "3.6.1",

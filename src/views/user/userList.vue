@@ -73,7 +73,7 @@
             </el-form-item>
 
             <el-form-item label="密码" prop="password">
-              <el-input v-model="temp.password"></el-input>
+              <el-input :type="passwordType" v-model="temp.password"></el-input>
             </el-form-item>
 
             <el-form-item label="姓名">
@@ -110,10 +110,6 @@
               <el-input v-model="ruleForm.userName"></el-input>
             </el-form-item>
 
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="ruleForm.password"></el-input>
-            </el-form-item>
-
             <el-form-item label="姓名">
               <el-input v-model="ruleForm.nickname"></el-input>
             </el-form-item>
@@ -147,6 +143,7 @@
 import { Message } from 'element-UI';
 import { global } from '@/global/global';
 import { api } from '@/global/api';
+import md5 from 'blueimp-md5';
 
 export default {
   data() {
@@ -164,10 +161,11 @@ export default {
           'userName': '',
           'password': '',
           'nickname': '',
-          'permissions': 3,
+          'permissions': '3',
           'remark': ''
         },
         userRoles: [{value : "1", label : "超级管理员"}, {value : "2", label : "管理员"}, {value : "3", label : "一般会员"}],
+        passwordType: 'password',
         rules: {
           userName: [
             { required: true, message: '请输入账号', trigger: 'blur' },
@@ -405,7 +403,9 @@ export default {
         let vm = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            
+            //密码加密
+            vm.temp.password = md5(vm.temp.password);
+
             console.log('提交入参：',vm.temp);
 
             global.post( api.addUser, vm.temp, null, function(res) {
