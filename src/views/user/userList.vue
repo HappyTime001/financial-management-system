@@ -83,7 +83,7 @@
             <el-form-item label="用户权限" prop="permissions">
                 <el-col :span="10" >
                     <el-select v-model="temp.permissions" placeholder="用户权限"  >
-                       <el-option class="user_permissions" v-for="item in  userRoles" :key="item.key" :label="item.label" :value="item.key">
+                       <el-option v-for="item in  userRoles" :key="item.value" :label="item.label" :value="item.value">
                        </el-option>
                     </el-select>
                  </el-col>
@@ -121,7 +121,7 @@
             <el-form-item label="用户权限" prop="permissions">
                 <el-col :span="10" >
                     <el-select v-model="ruleForm.permissions" placeholder="用户权限"  >
-                       <el-option class="user_permissions" v-for="item in  userRoles" :key="item.key" :label="item.label" :value="item.key">
+                       <el-option v-for="item in  userRoles" :key="item.value" :label="item.label" :value="item.value">
                        </el-option>
                     </el-select>
                  </el-col>
@@ -167,7 +167,7 @@ export default {
           'permissions': 3,
           'remark': ''
         },
-        userRoles: [{key : 1, label : "超级管理员"}, {key : 2, label : "管理员"}, {key : 3, label : "一般会员"}],
+        userRoles: [{value : "1", label : "超级管理员"}, {value : "2", label : "管理员"}, {value : "3", label : "一般会员"}],
         rules: {
           userName: [
             { required: true, message: '请输入账号', trigger: 'blur' },
@@ -177,9 +177,9 @@ export default {
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 1, message: '1个字符以上', trigger: 'blur' }
           ],
-          // permissions: [
-          //   { required: true, message: '请选择用户权限', trigger: 'change' }
-          // ],
+          permissions: [
+            { required: true, message: '请选择用户权限', trigger: 'change' }
+          ]
         },
         dialogFormVisible: false,
         //弹窗修改表单
@@ -262,9 +262,9 @@ export default {
 
                 console.log('=====',res);
 
-                if(res.permissions === 1) {
+                if(res.permissions === '1') {
                     res.permissions = "超级管理员"
-                }else if(res.permissions === 2) {
+                }else if(res.permissions === '2') {
                     res.permissions = "管理员"
                 }else {
                     res.permissions = "一般会员"
@@ -312,14 +312,6 @@ export default {
     //单个删除
     handleDelete(index,row){
         let vm = this;
-        //判断是否选中删除内容
-        if(vm.multipleSelection.length === 0){
-            this.$message({
-              type: 'info',
-              message: '请选择删除内容!'
-            });
-            return ;
-        }
         console.log('单个删除选择的row：',index,'-----',row);
         //前端删除。
         // vm.list.splice(index,1)
@@ -353,6 +345,7 @@ export default {
     //批量删除
     handleDelAll(){
         let vm = this;
+        //判断是否选中删除行
         if(vm.multipleSelection.length === 0){
             this.$message({
               type: 'info',
@@ -445,9 +438,3 @@ export default {
   }
 };
 </script>
-
-<style type="text/css" scope>
-  .user_permissions {
-    background-color: #fff !important;
-  }
-</style>
