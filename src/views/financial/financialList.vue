@@ -22,7 +22,7 @@
       <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>
       <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
       
-      <el-upload class="upload-demo" action="http://localhost:3000/api/fileUpload" 
+      <el-upload class="upload-demo" action="http://localhost:3000/api/importFinancialExcel" 
             :on-change="handleChange" 
             :show-file-list="showFileList"
             :on-progress="handleProgress"
@@ -306,10 +306,12 @@ export default {
        
         let par = vm.listQuery;
         console.log('入参1：',par)
-        let beginDate = formatDate(par.queryDate[0]);
-        let endDate = formatDate(par.queryDate[1]);
-        par.beginDate = beginDate;
-        par.endDate = endDate;
+        if(par.queryDate){
+            let beginDate = formatDate(par.queryDate[0]);
+            let endDate = formatDate(par.queryDate[1]);
+            par.beginDate = beginDate;
+            par.endDate = endDate;
+        }
 
         console.log('入参2：',par)
 

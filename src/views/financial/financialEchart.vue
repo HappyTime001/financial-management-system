@@ -344,11 +344,12 @@ export default {
        
         let par = vm.listQuery;
         console.log('入参1：',par)
-        let beginDate = formatDate(par.queryDate[0]);
-        let endDate = formatDate(par.queryDate[1]);
-        par.beginDate = beginDate;
-        par.endDate = endDate;
-
+        if(par.queryDate){
+            let beginDate = formatDate(par.queryDate[0]);
+            let endDate = formatDate(par.queryDate[1]);
+            par.beginDate = beginDate;
+            par.endDate = endDate;
+        }
         console.log('入参2：',par)
 
         global.get( api.financialList,{params: par },function(res){
