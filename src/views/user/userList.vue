@@ -11,7 +11,6 @@
       <el-button class="filter-item" type="primary" @click="handleCreate"  icon="edit">添加</el-button>
 
       <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>
-     
     </div>
    
     <!-- 表格 -->
@@ -49,10 +48,11 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center"  label="操作" >
+          <el-table-column align="center"  label="操作"  width="230">
               <template scope="scope">
                  <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                  <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                 <el-button size="small" @click="handleChangePass(scope.$index, scope.row)">修改密码</el-button>
               </template>
           </el-table-column>
     </el-table>
@@ -110,15 +110,6 @@
               <el-input v-model="ruleForm.userName"></el-input>
             </el-form-item>
 
-            <el-form-item label="密码" prop="password">
-              <el-input :type="passwordType" v-model="ruleForm.password"></el-input>
-            </el-form-item>
-
-            <el-form-item label="确认密码" prop="checkPass">
-                <el-input :type="passwordType" v-model="ruleForm.checkPass"></el-input>
-                <i @click="togglePasswordType" class="el-icon-information"></i>
-            </el-form-item>
-
             <el-form-item label="姓名">
               <el-input v-model="ruleForm.nickname"></el-input>
             </el-form-item>
@@ -145,6 +136,28 @@
           </div>
     </el-dialog>
 
+    <!-- 修改密码弹窗 -->
+    <el-dialog title="密码修改" :visible.sync="changepassFormVisible">
+
+        <el-form class="small-space" :model="passwordForm"  :rules="passwordFormRules" ref="passwordForm" label-position="right" label-width="100px" style='width: 400px; margin-left:50px;'>
+         
+            <el-form-item label="新密码" prop="newPassword">
+              <el-input :type="passwordType" v-model="passwordForm.newPassword" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="重复新密码" prop="newPassword2">
+              <el-input :type="passwordType" v-model="passwordForm.newPassword2" auto-complete="off"></el-input>
+              <i @click="togglePasswordType" class="el-icon-information"></i>
+            </el-form-item>
+
+        </el-form>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="changepassFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handlePwdModifySubmit('passwordForm')">确 定</el-button>
+          </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -156,14 +169,12 @@ import md5 from 'blueimp-md5';
 
 export default {
   data() {
-    const validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.password) {
+    const validateNewPassword2 = (rule, value, callback) => {
+      if (value !== this.passwordForm.newPassword) {
           callback(new Error('两次输入密码不一致!'));
-        } else {
+      } else {
           callback();
-        }
+      }
     };
     return {
         list: null,//表格list [].push({})
@@ -193,25 +204,42 @@ export default {
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 1, message: '1个字符以上', trigger: 'blur' }
           ],
-          checkPass: [
-            { required: true, trigger: 'blur', validator: validatePass2 }
-          ],
           permissions: [
             { required: true, message: '请选择用户权限', trigger: 'change' }
           ]
         },
+        //新增弹窗表单可见
         dialogFormVisible: false,
-        //弹窗修改表单
+
+        //修改弹窗表单
         ruleForm: {
           'userName': '',
-          'password': '',
-          'checkPass': '',
           'nickname': '',
           'permissions': '',
           'remark': ''
         },
+        //修改弹窗表单可见
         dialogRuleFormVisible: false,
-        multipleSelection: []
+
+        multipleSelection: [],
+
+        //修改密码弹窗
+        passwordForm: {
+            '_id': '',
+            'newPassword':'',
+            'newPassword2':''
+        },
+        passwordFormRules: {
+            newPassword: [
+                { required: true, trigger: 'blur', message: '新密码不能为空！'},
+            ],
+            newPassword2: [
+                { required: true, trigger: 'blur', message: '重复密码不能为空！'},
+                { required: true, trigger: 'blur' , validator: validateNewPassword2}
+            ]
+        },
+        //修改密码弹窗可见
+        changepassFormVisible: false
     }
   },
   filters: {
@@ -233,6 +261,14 @@ export default {
           'nickname': '',
           'permissions': '',
           'remark': ''
+      }
+    },
+    initPassTemp() {
+      let vm = this;
+      vm.passwordForm = {
+        'changePassId': '',
+        'newPassword':'',
+        'newPassword2':''
       }
     },
     //获取列表数据
@@ -281,8 +317,7 @@ export default {
                 var res = res.body.data;
                 console.log('=====',res);
                 vm.ruleForm = res;
-                //不需要显示原密码？
-                vm.ruleForm.password = '';
+                console.log('vm.ruleForm=====',vm.ruleForm);
             }else{
                 Message({
                     showClose: true,
@@ -399,12 +434,12 @@ export default {
     //操作分页
     handleCurrentChange(val) {
         console.log('--------',val)
-      this.listQuery.currPage = val;
-      this.getList();
+        this.listQuery.currPage = val;
+        this.getList();
     },
     //搜索
     handleFilter() {
-      this.getList();
+        this.getList();
     },
     //新增
     handleCreate() {
@@ -454,12 +489,60 @@ export default {
         } else {
           this.passwordType = 'text'
         }
+    },
+    handleChangePass(index, row) {
+        let vm = this;
+        //每次点击修改密码时 重置下新增表单数据，避免双向绑定的影响
+        vm.initPassTemp();
+        vm.changepassFormVisible = true;
+        vm.passwordForm._id = row._id;
+    },
+    handlePwdModifySubmit(formName){
+        let vm = this;
+        this.$refs[formName].validate((valid) => {
+            if (valid) {
+                //密码加密
+                vm.passwordForm.newPassword = md5(vm.passwordForm.newPassword);
+                vm.passwordForm.newPassword2 = md5(vm.passwordForm.newPassword2);
+                
+                vm.passwordForm = {
+                    '_id' : vm.passwordForm._id,
+                    'password' : vm.passwordForm.newPassword
+                }
+
+                console.log('修改密码提交入参===：',vm.passwordForm);
+
+                global.post( api.modifyUser, vm.passwordForm, null, function(res) {
+                    console.log('插入数据成功，接口返回的数据为：',res)
+                    //正式编程以下代码请放到接口成功回调函数中
+                    vm.$message({
+                        showClose: true,
+                        message: '修改密码成功！',
+                        type: 'success'
+                    })
+                    setTimeout(()=>{
+                        vm.getList();
+                    },2000)
+
+                    vm.changepassFormVisible = false;
+                }, function(){
+                    console.log('修改密码失败！')
+                    vm.changepassFormVisible = false;
+                }, false)
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+        });
     }
   }
 };
 </script>
 
 <style scoped>
+  .userList-container {
+    padding: 10px;
+  }
   .userList-container .el-icon-information {
       position: absolute;
       right: -18px;
