@@ -53,7 +53,8 @@ export const api = {
             'deleteUser' : nodeApiBaseUrl + '/api/deleteUser', //删除用户
             'queryUserItem': nodeApiBaseUrl + '/api/queryUserItem', //用户单条信息
             'addUser': nodeApiBaseUrl + '/api/addUser', //添加新用户
-            'modifyUser': nodeApiBaseUrl + '/api/modifyUser', //添加新用户
+            'modifyUser': nodeApiBaseUrl + '/api/modifyUser', //修改用户信息
+            'existUser': nodeApiBaseUrl + '/api/existUser', //判断账户名是否已经存在
 
             '0':url.apiUrl+'',//获取科室接口
             '1':url.apiUrl+'',

@@ -48,7 +48,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center"  label="操作"  width="230">
+          <el-table-column align="center"  label="操作"  width="220">
               <template scope="scope">
                  <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                  <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -69,7 +69,8 @@
           <el-form class="small-space" :model="temp" :rules="rules" ref="temp" label-position="left" label-width="80px" style='width: 430px; margin-left:50px;'>
 
             <el-form-item label="账号" prop="userName">
-              <el-input v-model="temp.userName"></el-input>
+              <el-input v-model="temp.userName" @blur="isExistUser"></el-input>
+              <i style="color: red; font-style:normal; font-size: 10px;" v-show="userExisting">账户已经存在， 请重新输入</i>
             </el-form-item>
 
             <el-form-item label="密码" prop="password">
@@ -170,16 +171,16 @@ import md5 from 'blueimp-md5';
 export default {
   data() {
     const validateNewPassword2 = (rule, value, callback) => {
-      if (value !== this.passwordForm.newPassword) {
-          callback(new Error('两次输入密码不一致!'));
-      } else {
-          callback();
-      }
+        if (value !== this.passwordForm.newPassword) {
+            callback(new Error('两次输入密码不一致!'));
+        } else {
+            callback();
+        }
     };
     return {
         list: null,//表格list [].push({})
         total: null,
-        listLoading: true,
+        listLoading: false,
         listQuery: {
             currPage: 1,
             pageSize: 10,
@@ -193,6 +194,12 @@ export default {
           'permissions': '3',
           'remark': ''
         },
+        userQuery : {
+            userName: ''
+        },
+        userQueryList: [],
+        userExisting: false,
+
         userRoles: [{value : "1", label : "超级管理员"}, {value : "2", label : "管理员"}, {value : "3", label : "一般会员"}],
         passwordType: 'password',
         rules: {
@@ -303,7 +310,6 @@ export default {
     //编辑
     handleEdit(index,row){
         let vm = this;
-        vm.dialogRuleFormVisible = true;
         console.log('编辑的row：',index,'-----',row);
         vm.getFormData(row._id);
     },
@@ -447,6 +453,31 @@ export default {
         this.initTemp();
         this.dialogFormVisible = true;
     },
+    //新增时验证账户是否重复
+    isExistUser(){
+        let vm = this;
+        vm.userQuery.userName = vm.temp.userName;
+        global.get( api.existUser, { params: vm.userQuery },function(res){
+            console.log('userQueryList列表数据：',res);
+            let data = res.body;
+            if(data.resultCode == 0){ 
+                vm.userQueryList = data.data;
+                if(vm.userQueryList.length > 0){
+                  vm.userExisting = true;
+                  return;
+                }
+                vm.userExisting = false;
+            }else{
+                Message({
+                    showClose: true,
+                    message: "",
+                    type: 'error'
+                });
+            }
+        }, function(res){
+            vm.listLoading = false;
+        }, false)
+    },
     //新增提交
     handleCreateSubmit(formName){
         let vm = this;
@@ -504,7 +535,7 @@ export default {
                 //密码加密
                 vm.passwordForm.newPassword = md5(vm.passwordForm.newPassword);
                 vm.passwordForm.newPassword2 = md5(vm.passwordForm.newPassword2);
-                
+
                 vm.passwordForm = {
                     '_id' : vm.passwordForm._id,
                     'password' : vm.passwordForm.newPassword
@@ -514,7 +545,6 @@ export default {
 
                 global.post( api.modifyUser, vm.passwordForm, null, function(res) {
                     console.log('插入数据成功，接口返回的数据为：',res)
-                    //正式编程以下代码请放到接口成功回调函数中
                     vm.$message({
                         showClose: true,
                         message: '修改密码成功！',
