@@ -1,12 +1,10 @@
-
-
-function pluralize(time, label) {
-  if (time === 1) {
-    return time + label
-  }
-  return time + label + 's'
+// 小数过滤器，转为保留2位小数，如200.45
+export function numberToFixed2(value){
+    
+    return Number(value).toFixed(2);
 }
 
+// 时间过滤器，转为2017-7-7
 export function formatDate(time){
     let _year = new Date(time).getFullYear(),
         _month = new Date(time).getMonth()+1,
@@ -15,6 +13,15 @@ export function formatDate(time){
     let formatDate = _year+'-'+_month+'-'+_date;
     return formatDate;
 }
+
+function pluralize(time, label) {
+  if (time === 1) {
+    return time + label
+  }
+  return time + label + 's'
+}
+
+
 
 export function timeAgo(time) {
   const between = Date.now() / 1000 - Number(time);

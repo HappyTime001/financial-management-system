@@ -38,107 +38,107 @@
    
     <!-- 表格 -->
     <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row  >
-         <el-table-column type="selection" width="65">
+         <el-table-column type="selection" width="45px">
          </el-table-column>
 
-          <el-table-column align="center" label='序号' width="">
+          <el-table-column align="center" label='序号' width="65px">
             <template scope="scope">
               {{scope.$index+1}}
             </template>
           </el-table-column>
 
-          <el-table-column label="时间" width="">
+          <el-table-column label="时间" width="85px" >
             <template scope="scope">
               {{scope.row.financialDate | formatDate}}
             </template>
           </el-table-column>
           <el-table-column label="公司入款" width="">
             <template scope="scope">
-              {{scope.row.companyIncome}}
+              {{scope.row.companyIncome | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="线上支付" width="">
             <template scope="scope">
-              {{scope.row.onlinePay}}
+              {{scope.row.onlinePay | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="人工存入" width="">
             <template scope="scope">
-              {{scope.row.manualDeposit}}
+              {{scope.row.manualDeposit | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="充值合计" width="">
             <template scope="scope">
-              {{scope.row.rechargeTotal}}
+              {{scope.row.rechargeTotal | numberToFixed2}}
             </template>
           </el-table-column>
 
           <el-table-column label="ARPPU" width="">
             <template scope="scope">
-              {{scope.row.ARPPU}}
+              {{scope.row.ARPPU | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="人工扣款" width="">
             <template scope="scope">
-              {{scope.row.manualDeductions}}
+              {{scope.row.manualDeductions | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="出款金额" width="">
             <template scope="scope">
-              {{scope.row.expendTotal}}
+              {{scope.row.expendTotal | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="充提差" width="">
             <template scope="scope">
-              {{scope.row.rechargeBalance}}
+              {{scope.row.rechargeBalance | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="唯一充值用户" width="">
             <template scope="scope">
-              {{scope.row.prepaidUser}}
+              {{scope.row.prepaidUser | numberToFixed2}}
             </template>
           </el-table-column>
 
           <el-table-column label="唯一提款用户" width="">
             <template scope="scope">
-              {{scope.row.drawingsUsr}}
+              {{scope.row.drawingsUsr | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="流水" width="">
             <template scope="scope">
-              {{scope.row.watercourse}}
+              {{scope.row.watercourse | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="损益" width="">
             <template scope="scope">
-              {{scope.row.downProfit}}
+              {{scope.row.downProfit | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="净利润" width="">
             <template scope="scope">
-              {{scope.row.upProfits}}
+              {{scope.row.upProfits | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="存款优惠" width="">
             <template scope="scope">
-              {{scope.row.depositDiscounts}}
+              {{scope.row.depositDiscounts | numberToFixed2}}
             </template>
           </el-table-column>
 
           <el-table-column label="活动优惠" width="">
             <template scope="scope">
-              {{scope.row.activityDiscounts}}
+              {{scope.row.activityDiscounts | numberToFixed2}}
             </template>
           </el-table-column>
           <el-table-column label="日返水" width="">
             <template scope="scope">
-              {{scope.row.returnMoney}}
+              {{scope.row.returnMoney | numberToFixed2}}
             </template>
           </el-table-column>
 
           
 
-            <el-table-column align="center"  label="操作" >
+            <el-table-column align="center"  label="操作" width="120px">
                 <template scope="scope">
                     
                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -193,6 +193,9 @@
 import {global} from 'src/global/global';
 import {api} from 'src/global/api';
 import {formatDate} from '@/filters/index';
+import {numberToFixed2} from '@/filters/index';
+
+import financialList from 'src/global/financialList';
 
 
 export default {
@@ -259,16 +262,18 @@ export default {
   },
   //过滤器--时间格式化。临时写法
   filters: {
-        formatDate: function(value) {
-            return formatDate(value);
+        formatDate,
+        numberToFixed2,
+        // formatDate: function(value) {
+        //     return formatDate(value);
             
-            // let _year = new Date(value).getFullYear(),
-            //     _month = new Date(value).getMonth()+1,
-            //     _date = new Date(value).getDate();
+        //     // let _year = new Date(value).getFullYear(),
+        //     //     _month = new Date(value).getMonth()+1,
+        //     //     _date = new Date(value).getDate();
 
-            // let formatDate = _year+'-'+_month+'-'+_date
-            // return formatDate;
-        }      
+        //     // let formatDate = _year+'-'+_month+'-'+_date
+        //     // return formatDate;
+        // }      
   },
   mounted() {
         let vm = this;
@@ -471,8 +476,8 @@ export default {
 
       require.ensure([], () => {
         const { export_json_to_excel } = require('vendor/Export2Excel');
-        const tHeader = ['时间', '公司入款', '线上支付', '人工存入', '充值合计'];
-        const filterVal = ['financialDate', 'companyIncome', 'onlinePay', 'manualDeposit', 'rechargeTotal'];
+        const tHeader = financialList[0];
+        const filterVal = financialList[1];
         const list = vm.list;
         const data = vm.formatJson(filterVal, list);
 
@@ -487,11 +492,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
   
     .upload-demo{
         display: inline-block;
         vertical-align: top;
         margin-left: 10px;
+    }
+    /*scoped 不能使用否则不生效*/
+    .el-table .cell, .el-table th>div{
+        box-sizing: border-box;
+        text-overflow: ellipsis;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
     }
 </style>

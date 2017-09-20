@@ -3,10 +3,10 @@
    
     <!-- 搜索条件 -->
     <div class="filter-container">
-        <el-select v-model="selectValue" placeholder="请选择">
+        <!-- <el-select v-model="selectValue" placeholder="请选择">
             <el-option v-for="item in selectOpt" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
-        </el-select>
+        </el-select> -->
 
           <el-date-picker
             v-model="listQuery.queryDate"
@@ -244,13 +244,13 @@ export default {
             //图例组件。
             legend: {
                 data: ['公司入款','线上支付', '人工存入'], //配置项可设置颜色
-                // selected: {
-                //     // 选中'系列1'
-                //     '公司入款': true,
-                //     // 不选中'系列2'
-                //     '线上支付': false,
-                //     '人工存入': false,
-                // }
+                selected: {
+                    // 选中'系列1'
+                    '公司入款': true,
+                    // 不选中'系列2'
+                    '线上支付': false,
+                    '人工存入': false,
+                }
             },
             //直角坐标系内绘图网格
             grid: {
