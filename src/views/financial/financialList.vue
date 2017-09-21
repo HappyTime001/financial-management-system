@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-   {{userInfo}}
+   <!-- {{userInfo}} -->
     <!-- 搜索条件 -->
     <div class="filter-container">
      
