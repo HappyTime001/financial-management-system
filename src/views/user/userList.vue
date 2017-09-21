@@ -69,8 +69,7 @@
           <el-form class="small-space" :model="temp" :rules="rules" ref="temp" label-position="left" label-width="80px" style='width: 430px; margin-left:50px;'>
 
             <el-form-item label="账号" prop="userName">
-              <el-input v-model="temp.userName" @blur="isExistUser"></el-input>
-              <div class="el-form-item__error" v-show="userExisting">账户已经存在， 请重新输入</div>
+              <el-input v-model="temp.userName"></el-input>
             </el-form-item>
 
             <el-form-item label="密码" prop="password">
@@ -170,6 +169,18 @@ import md5 from 'blueimp-md5';
 
 export default {
   data() {
+    const validateUserName = (rule, value, callback) => {
+        let vm = this;
+        vm.isExistUser();
+        setTimeout(function() {  
+            console.log(vm.userExisting);
+            if (vm.userExisting == true) {
+                callback(new Error('账户已经存在， 请重新输入'));
+            } else {
+                callback();
+            } 
+        }, 1200); 
+    }
     const validateNewPassword2 = (rule, value, callback) => {
         if (value !== this.passwordForm.newPassword) {
             callback(new Error('两次输入密码不一致!'));
@@ -205,7 +216,8 @@ export default {
         rules: {
           userName: [
             { required: true, message: '请输入账号', trigger: 'blur' },
-            { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
+            { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' },
+            { required: true, trigger: 'blur' , validator: validateUserName}
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
@@ -503,11 +515,8 @@ export default {
                 vm.dialogFormVisible = false;
             }, function(){
                 console.log('插入数据失败')
-
                 vm.dialogFormVisible = false;
             }, false)
-
-
           } else {
             console.log('error submit!!');
             return false;
