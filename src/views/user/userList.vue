@@ -106,8 +106,8 @@
     <el-dialog title="编辑信息" :visible.sync="dialogRuleFormVisible">
           <el-form class="small-space" :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="80px" style='width: 420px; margin-left:50px;'>
 
-            <el-form-item label="账号" prop="userName">
-              <el-input v-model="ruleForm.userName"></el-input>
+            <el-form-item label="账号">
+              <el-input v-model="ruleForm.userName" readonly></el-input>
             </el-form-item>
 
             <el-form-item label="姓名">
@@ -173,13 +173,13 @@ export default {
         let vm = this;
         vm.isExistUser();
         setTimeout(function() {  
-            console.log(vm.userExisting);
+            console.log("userExisting===", vm.userExisting);
             if (vm.userExisting == true) {
                 callback(new Error('账户已经存在， 请重新输入'));
             } else {
                 callback();
             } 
-        }, 1200); 
+        }, 1300); 
     }
     const validateNewPassword2 = (rule, value, callback) => {
         if (value !== this.passwordForm.newPassword) {
@@ -322,6 +322,7 @@ export default {
     //编辑
     handleEdit(index,row){
         let vm = this;
+        vm.dialogRuleFormVisible = true;
         console.log('编辑的row：',index,'-----',row);
         vm.getFormData(row._id);
     },
