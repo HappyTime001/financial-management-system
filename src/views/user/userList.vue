@@ -70,7 +70,7 @@
 
             <el-form-item label="账号" prop="userName">
               <el-input v-model="temp.userName" @blur="isExistUser"></el-input>
-              <i style="color: red; font-style:normal; font-size: 10px;" v-show="userExisting">账户已经存在， 请重新输入</i>
+              <div class="el-form-item__error" v-show="userExisting">账户已经存在， 请重新输入</div>
             </el-form-item>
 
             <el-form-item label="密码" prop="password">
