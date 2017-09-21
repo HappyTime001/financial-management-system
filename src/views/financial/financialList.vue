@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-   
+   {{userInfo}}
     <!-- 搜索条件 -->
     <div class="filter-container">
      
@@ -17,12 +17,12 @@
      
 
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate"  icon="edit">添加</el-button>
+      <el-button class="filter-item" type="primary" @click="handleCreate"  icon="edit" v-if=" userInfo.baseInfo.role == '10010' || userInfo.baseInfo.role == '10011' ">添加</el-button>
 
-      <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>
-      <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit" v-if=" userInfo.baseInfo.role == '10010' ">批量删除</el-button>
+      <el-button class="filter-item" type="primary" icon="document" @click="handleDownload" v-if=" userInfo.baseInfo.role == '10010' ">导出</el-button>
       
-      <el-upload class="upload-demo" action="http://localhost:3000/api/importFinancialExcel" 
+      <el-upload class="upload-demo" v-if=" userInfo.baseInfo.role == '10010' || userInfo.baseInfo.role == '10011' " action="http://localhost:3000/api/importFinancialExcel" 
             :on-change="handleChange" 
             :show-file-list="showFileList"
             :on-progress="handleProgress"
@@ -141,8 +141,8 @@
             <el-table-column align="center"  label="操作" width="120px">
                 <template scope="scope">
                     
-                   <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                   <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                   <el-button size="small" @click="handleEdit(scope.$index, scope.row)" v-if=" userInfo.baseInfo.role == '10010' || userInfo.baseInfo.role == '10011' ">编辑</el-button>
+                   <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)" v-if=" userInfo.baseInfo.role === '10010' ">删除</el-button>
                          
                 </template>
             </el-table-column>
@@ -189,6 +189,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 // import { getList } from 'api/article';
 import {global} from 'src/global/global';
 import {api} from 'src/global/api';
@@ -199,66 +200,73 @@ import financialList from 'src/global/financialList';
 
 
 export default {
-  data() {
-    return {
-        showFileList:false,
-        dateEditable:false,
-        pickerOptions2: {
-              shortcuts: [{
-                text: '最近一周',
-                onClick(picker) {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                  picker.$emit('pick', [start, end]);
-                }
-              }, {
-                text: '最近一个月',
-                onClick(picker) {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                  picker.$emit('pick', [start, end]);
-                }
-              }, {
-                text: '最近三个月',
-                onClick(picker) {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                  picker.$emit('pick', [start, end]);
-                }
-              }]
-        },
-        list: null,//表格list [].push({})
-        total: null,
-        listLoading: true,
-        listQuery: {
-            currPage: 1,
-            pageSize: 10,
+    data() {
+        return {
+            showFileList:false,
+            dateEditable:false,
+            pickerOptions2: {
+                  shortcuts: [{
+                    text: '最近一周',
+                    onClick(picker) {
+                      const end = new Date();
+                      const start = new Date();
+                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                      picker.$emit('pick', [start, end]);
+                    }
+                  }, {
+                    text: '最近一个月',
+                    onClick(picker) {
+                      const end = new Date();
+                      const start = new Date();
+                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                      picker.$emit('pick', [start, end]);
+                    }
+                  }, {
+                    text: '最近三个月',
+                    onClick(picker) {
+                      const end = new Date();
+                      const start = new Date();
+                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                      picker.$emit('pick', [start, end]);
+                    }
+                  }]
+            },
+            list: null,//表格list [].push({})
+            total: null,
+            listLoading: true,
+            listQuery: {
+                currPage: 1,
+                pageSize: 10,
 
-            queryDate: '',
-            
-               
-        },
-        temp: {
-          "chnlId": "",
-          "hisChnlId": "",
-          "chnlName": "",
-          "state": "",
-          "isavailable": "",
-          "orderNum": 10
-        },
-        typeOptions:[
-          { key: '001', display_name: '类型1' },
-          { key: '002', display_name: '类型2' },
-          { key: '003', display_name: '类型3' }
-         
-        ],
-        dialogFormVisible: false,
-        multipleSelection: []
+                queryDate: '',
+                
+                   
+            },
+            temp: {
+              "chnlId": "",
+              "hisChnlId": "",
+              "chnlName": "",
+              "state": "",
+              "isavailable": "",
+              "orderNum": 10
+            },
+            typeOptions:[
+              { key: '001', display_name: '类型1' },
+              { key: '002', display_name: '类型2' },
+              { key: '003', display_name: '类型3' }
+             
+            ],
+            dialogFormVisible: false,
+            multipleSelection: []
 
-    }
+        }
+    },
+    computed: {
+    ...mapGetters([
+      
+      'userInfo',
+        
+    ])
   },
   //过滤器--时间格式化。临时写法
   filters: {
