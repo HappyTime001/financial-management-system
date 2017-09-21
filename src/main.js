@@ -50,7 +50,8 @@ router.beforeEach((to, from, next) => {
     //获取先获取用户信息，从用户信息中拿权限，判断是否手敲
     //console.log(from,'路由---->',to )
 
-    if (store.getters.token) { // 判断是否有token。接口会有延迟
+    if (store.getters.uid ) { // 判断是否有token。接口会有延迟
+      // alert(store.getters.uid,0)
             if (to.path === '/login') {
               next({ path: '/' });
             } else if(to.path == '/401'){

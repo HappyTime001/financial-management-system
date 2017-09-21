@@ -4,9 +4,9 @@
                  label-width="0px"
                  class="card-box login-form">
             <h3 class="title">系统登录<i class="fa fa-tripadvisor" aria-hidden="true"></i></h3>
-            <el-form-item prop="email">
+            <el-form-item prop="userName">
                 <span class="svg-container"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
-                <el-input name="email" type="text" v-model="loginForm.email" autoComplete="off"
+                <el-input name="userName" type="text" v-model="loginForm.userName" autoComplete="off"
                           placeholder="邮箱"></el-input>
             </el-form-item>
             <el-form-item prop="password">
@@ -19,11 +19,11 @@
                     登录
                 </el-button>
             </el-form-item>
-            <div class='tips'>测试帐号为:81438234@qq.com 密码：123456</div>
+            <div class='tips'>测试帐号为:admin 密码：1</div>
             
-            <router-link to="/sendpwd" class="forget-pwd">
+            <!-- <router-link to="/sendpwd" class="forget-pwd">
                 忘记密码?(或首次登录)
-            </router-link>
+            </router-link> -->
         </el-form>
        
     </div>
@@ -71,17 +71,19 @@
 
         return {
             loginForm: {
-                email: '81438234@qq.com',
+                userName: 'admin',
                 password: ''
             },
             loginRules: {
                 email: [
-                    { required: true, trigger: 'blur', validator: validateEmail },
-                    {  trigger: 'blur' , validator: validateAccount}
+                    { required: true, trigger: 'blur'},
+                    // { required: true, trigger: 'blur', validator: validateEmail },
+                    // {  trigger: 'blur' , validator: validateAccount}
                 ],
                 password: [
-                    { required: true, trigger: 'blur', validator: validatePass },
-                    {  trigger: 'blur' , validator: validatePass2}
+                    { required: true, trigger: 'blur'},
+                    // { required: true, trigger: 'blur', validator: validatePass },
+                    // {  trigger: 'blur' , validator: validatePass2}
                 ]
             },
             loading: false,
@@ -96,25 +98,40 @@
       },
       methods: {
         handleLogin() {
-            
+            let vm = this;
+            // {
+            //     "_id" : ObjectId("59c34b8efc5b9e1d94f72a10"),
+            //     "userName" : "admin",
+            //     "password" : "43b724755e5f781c3b369d1018847eb6",
+            //     "nickname" : "1",
+            //     "permissions" : "1",
+            //     "remark" : "1",
+            //     "createDate" : ISODate("2017-09-21T05:18:06.883Z")
+            // }
+
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
-                  this.loading = true;
+                    vm.loading = true;
                     var  par = JSON.parse(JSON.stringify(this.loginForm)) ;
                          par.password = md5('@lss'+par.password);
 
                     this.$store.dispatch('LoginByEmail', par).then(() => {
-                    this.loading = false;
-                   
-                    console.log('登陆成功即将跳转--------')
-                    this.$router.push({ path: '/' });
-                   
+                            vm.loading = false;
+                           
+                            console.log('登陆成功即将跳转--------')
+                            vm.$router.push({ path: '/' });
                         
-                    // this.showDialog = true;
-                  }).catch(err => {
-                    this.$message.error(err);
-                    this.loading = false;
-                  });
+                        //路由跳转有问题！~ 9.21
+                           location.reload()
+                                
+                            // this.showDialog = true;
+                    }).catch(err => {
+                        vm.loading = false;
+                        this.$message.error(err);
+                        
+                    });
+                    //2017-9-21
+                    vm.loading = false;
                 } else {
                   console.log('error submit!!');
                   return false;

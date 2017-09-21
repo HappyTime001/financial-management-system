@@ -25,17 +25,6 @@ const Err401 = _import('error/401');
 
 const PersonalInfo = _import('index/personalInfo');
 const Readme = _import('index/readme');
-/* example*/
-const TableList = _import('example/tableList');
-
-// 豆瓣电影
-const NewMovie = _import('movie/newMovie');
-const MovieSearch = _import('movie/movieSearch');
-
-
-const Form = _import('example/form');
-const Tinymce = _import('example/tinymce');
-const Mixin = _import('example/mixin');
 
 /* 系统管理*/
 const PermissionsManage = _import('systemSet/permissionsManage');
@@ -95,35 +84,6 @@ const constantRouterMap = [
   },
 
   {
-    path: '/example',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '',
-    // icon: 'EXCEL',
-    noDropdown: true,
-    children: [{ path: 'tableList', component: TableList, name: '示例表格' }]
-  },
-
-  {
-    path: '/movie',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '',
-    // icon: 'EXCEL',
-    noDropdown: true,
-    children: [{ path: 'newMovie', component: NewMovie, name: '热映电影列表' }]
-  },
-  {
-    path: '/movie',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '',
-    // icon: 'EXCEL',
-    noDropdown: true,
-    children: [{ path: 'movieSearch', component: MovieSearch, name: '电影搜索' }]
-  },
-
-  {
     path: '/errorpage',
     component: Layout,
     redirect: 'noredirect',
@@ -168,21 +128,7 @@ const constantRouterMap = [
       { path: 'userList', component: UserList, name: '用户列表' } 
     ]
   },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '综合实例',
-    // icon: 'zonghe',
-    children: [
-      
-      { path: 'form', component: Form, name: 'form表单编辑' },
-
-      { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
-      { path: 'mixin', component: Mixin, name: '小组件' },
-      { path: '31', component: Form, name: '三级菜单1' },
-    ]
-  },
+  
   // { path: '/', redirect: '/excel', hidden: true },
   { path: '*', redirect: '/404', hidden: true }
   

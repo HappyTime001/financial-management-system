@@ -50,10 +50,10 @@ const user = {
                     var res = res.body.data;
 
                     // 按一天8小时工作制设置过期时间
-                      Cookies.set('userToken', res.token,{ expires: 1/3}); //设置token
+                      // Cookies.set('userToken', res.token,{ expires: 1/3}); //设置token
                       Cookies.set('userId', res.uid,{ expires: 1/3}); //设置用户id，
 
-                      commit('SET_TOKEN', res.token);
+                      // commit('SET_TOKEN', res.token);
                       //设置userInfo
                       //commit('SET_USERINFO', res); //此处也可省略，放在getUserInfo中统一处理
 
@@ -79,8 +79,9 @@ const user = {
 
     // 获取用户信息
     GetInfo({ dispatch,commit, state }) {
+        
         return new Promise((resolve, reject) => {
-            global.get( api.getUserInfo,{params:{'userId':state.uid}}, function(res){
+            global.get( api.getUserInfo,{params:{'_id':state.uid}}, function(res){
                   console.log('-------根据id获取用户信息：',JSON.stringify(res) )
                   if(res.body.resultCode == 0){
                        var res = res.body.data;
@@ -88,7 +89,7 @@ const user = {
                              // Cookies.set('userToken', res.token); //Cookies.get('userId')
                              // Cookies.set('userId', res.uid); //Cookies.get('userId')
 
-                             commit('SET_TOKEN', res.token);
+                             // commit('SET_TOKEN', res.token);
                              //设置userInfo
                              commit('SET_USERINFO', res);
 

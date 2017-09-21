@@ -38,7 +38,7 @@
 
           <el-table-column label="角色" width="">
             <template scope="scope">
-              {{scope.row.permissions | roleFilterTip}}
+              {{scope.row.role | roleFilterTip}}
             </template>
           </el-table-column>
 
@@ -80,9 +80,9 @@
               <el-input v-model="temp.nickname"></el-input>
             </el-form-item>
 
-            <el-form-item label="用户权限" prop="permissions">
+            <el-form-item label="用户权限" prop="role">
                 <el-col :span="10" >
-                    <el-select v-model="temp.permissions" placeholder="用户权限"  >
+                    <el-select v-model="temp.role" placeholder="用户权限"  >
                        <el-option v-for="item in  userRoles" :key="item.value" :label="item.label" :value="item.value">
                        </el-option>
                     </el-select>
@@ -114,9 +114,9 @@
               <el-input v-model="ruleForm.nickname"></el-input>
             </el-form-item>
 
-            <el-form-item label="用户权限" prop="permissions">
+            <el-form-item label="用户权限" prop="role">
                 <el-col :span="10" >
-                    <el-select v-model="ruleForm.permissions" placeholder="用户权限"  >
+                    <el-select v-model="ruleForm.role" placeholder="用户权限"  >
                        <el-option v-for="item in  userRoles" :key="item.value" :label="item.label" :value="item.value">
                        </el-option>
                     </el-select>
@@ -202,7 +202,7 @@ export default {
           'userName': '',
           'password': '',
           'nickname': '',
-          'permissions': '3',
+          'role': '10010',
           'remark': ''
         },
         userQuery : {
@@ -211,7 +211,7 @@ export default {
         userQueryList: [],
         userExisting: false,
 
-        userRoles: [{value : "1", label : "超级管理员"}, {value : "2", label : "管理员"}, {value : "3", label : "一般会员"}],
+        userRoles: [{value : "10010", label : "超级管理员"}, {value : "10011", label : "管理员"}, {value : "10012", label : "一般会员"}],
         passwordType: 'password',
         rules: {
           userName: [
@@ -223,7 +223,7 @@ export default {
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 1, message: '1个字符以上', trigger: 'blur' }
           ],
-          permissions: [
+          role: [
             { required: true, message: '请选择用户权限', trigger: 'change' }
           ]
         },
@@ -234,7 +234,7 @@ export default {
         ruleForm: {
           'userName': '',
           'nickname': '',
-          'permissions': '',
+          'role': '',
           'remark': ''
         },
         //修改弹窗表单可见
@@ -278,7 +278,7 @@ export default {
           'userName': '',
           'password': '',
           'nickname': '',
-          'permissions': '',
+          'role': '',
           'remark': ''
       }
     },
@@ -497,7 +497,7 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //密码加密
-            vm.temp.password = md5(vm.temp.password);
+            vm.temp.password = md5('@lss'+vm.temp.password);
 
             console.log('提交入参：',vm.temp);
 
@@ -543,8 +543,8 @@ export default {
         this.$refs[formName].validate((valid) => {
             if (valid) {
                 //密码加密
-                vm.passwordForm.newPassword = md5(vm.passwordForm.newPassword);
-                vm.passwordForm.newPassword2 = md5(vm.passwordForm.newPassword2);
+                vm.passwordForm.newPassword = md5('@lss'+vm.passwordForm.newPassword);
+                vm.passwordForm.newPassword2 = md5('@lss'+vm.passwordForm.newPassword2);
 
                 vm.passwordForm = {
                     '_id' : vm.passwordForm._id,

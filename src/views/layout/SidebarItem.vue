@@ -37,7 +37,7 @@
                
             </el-submenu>
 
-            <el-submenu index="数据管理" > 
+            <el-submenu index="数据管理" v-if="routes['/financialManage/financialList'] || routes['/financialManage/financialEchart']"> 
                 <template slot="title">
                     <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 数据管理
                 </template>
@@ -58,11 +58,12 @@
                     </router-link>
             </el-submenu>
 
-            <el-submenu index="账号管理" > 
+            <el-submenu index="账号管理" v-if="routes['/user/userList']">
+            
                 <template slot="title">
                     <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 账号管理
                 </template>
-                    <router-link  class="menu-indent" to="/user/userList" >
+                    <router-link  class="menu-indent" to="/user/userList" v-if="routes['/user/userList']">
                         <el-menu-item index="/user/userList">
                             账号列表
                         </el-menu-item>
