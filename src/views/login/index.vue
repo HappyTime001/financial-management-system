@@ -127,6 +127,10 @@
                             // this.showDialog = true;
                     }).catch(err => {
                         vm.loading = false;
+                        
+                        if(!err.ok){
+                          err = '服务器挂了……请联系管理员！'
+                        }
                         this.$message.error(err);
                         
                     });

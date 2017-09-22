@@ -99,6 +99,7 @@
 
     import {global} from 'src/global/global';
     import Cookies from 'js-cookie';
+    import { api } from '@/global/api';
     import md5 from 'blueimp-md5';
 
     export default {
@@ -110,12 +111,22 @@
       },
       data() {
         const validateOldPassword = (rule, value, callback) => {
-            if ( md5('@lss'+value) !== md5('@lss123456') ) { 
-                  callback(new Error('旧密码不正确！'));
-            } else {
+                let vm = this;
+                vm.validateOldPassword( md5('@lss'+value) ,function(result){
+                    if(!result){
+                        //此处，需要交给接口校验密码是否正确
+                        callback(new Error('旧密码不正确！'));
+                    }else{
+                        callback();
+                    }
+                });
+            // if ( md5('@lss'+value) !== md5('@lss123456') ) { 
+            //     //此处，需要交给接口校验密码是否正确
+            //     callback(new Error('旧密码不正确！'));
+            // } else {
                 
-                callback();
-            }
+            //     callback();
+            // }
         };
         const validateNewPassword2 = (rule, value, callback) => {
                 if (value !== this.passwordForm.newPassword) {
@@ -138,7 +149,7 @@
             passwordFormRules: {
                 oldPassword: [
                     { required: true, trigger: 'blur', message: '旧密码不能为空！'},
-                    { required: true, trigger: 'blur' , validator: validateOldPassword}
+                    { trigger: 'blur' , validator: validateOldPassword}
                    
                 ],
                 newPassword: [
@@ -170,18 +181,60 @@
 
             this.dialogVisible = false;
         },
+        //校验旧密码
+        validateOldPassword(pwd,cb){
+            let vm = this;
+
+            let par ={
+                    '_id': vm.userInfo.baseInfo._id,
+                    'password': pwd,
+                }
+            console.log('密码校验入参：',par);
+
+            global.get( api.validatePassword, { params: par },function(res){
+                console.log('密码校验返回：',res);
+                let data = res.body;
+               
+                if (data.data.result) {
+                    console.log('旧密码验证成功')
+                    cb(true)
+                }else{
+                    console.log('旧密码不正确！')
+                    cb(false)
+                }
+                return false;
+
+            }, function(res){
+                vm.$message.error('请求出错了',res);
+            }, false)
+        },
+        //修改密码提交
         handlePwdModifySubmit(formName){
             var vm = this;
-            console.log('---',this.passwordForm)
+           
             vm.$refs.passwordForm.validate(valid => {
                 if (valid) {
-                    alert('恭喜:旧密码验证成功!')
+                    // alert('恭喜:旧密码验证成功!')
                    var par = {
-                            "oldPassword": md5('@lss123456'),
+                            '_id': vm.userInfo.baseInfo._id,
+                            "oldPassword": md5('@lss' + vm.passwordForm.oldPassword),
                             "newPassword": md5('@lss' + vm.passwordForm.newPassword),
                             "newPassword2": md5('@lss' + vm.passwordForm.newPassword2),
                     }
-                    console.log('密码修改入参为：',par)
+                    console.log('密码修改入参为=====：',par)
+                    global.post( api.modifyPassword, par, null, function(res){
+                        vm.$message({
+                            showClose: true,
+                            message: '密码修改成功！',
+                            type: 'success'
+                        })
+                        setTimeout(()=>{
+                            vm.dialogFormVisible = false;
+                        },1000)
+                    },function(res){
+                        alert('插入数据失败，接口返回的数据为：',res)
+                    })
+
                 } else {
                   console.log('error submit!!');
                   return false;

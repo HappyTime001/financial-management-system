@@ -59,6 +59,9 @@ export const api = {
             //登录
             'login':nodeApiBaseUrl+'/api/login',//登录
             'getUserInfo':nodeApiBaseUrl+'/api/getUserInfo',//获取登录用户信息
+            'validatePassword':nodeApiBaseUrl+'/api/validatePassword',//校验密码
+            'modifyPassword':nodeApiBaseUrl+'/api/modifyPassword',//校验密码
+
 
             '0':url.apiUrl+'',//获取科室接口
             '1':url.apiUrl+'',

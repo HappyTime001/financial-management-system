@@ -12,7 +12,7 @@
                     </p> -->
 
                     <img v-if="newImageUrl" :src="newImageUrl" alt="用户头像" >
-                    <img v-else :src="personalInfo.avatar" alt="用户头像" >
+                    <img v-else :src="personalInfo.baseInfo.avatar" alt="用户头像" >
 
                     <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                      <!--  <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
@@ -94,17 +94,7 @@
         </el-row>
 
         <el-row :gutter="20" style="margin-top:20px;">
-            <el-col :span="8">
-                <div id="income">
-                  
-                </div>
-            </el-col>
-
-            <el-col :span="12">
-                <div id="interest">
-                  
-                </div>
-            </el-col>
+            
 
         </el-row>
 
@@ -138,47 +128,7 @@ export default {
         
         vm.resetForm();
 
-        // 基于准备好的dom，初始化echarts实例
-        var myChart1 = echarts.init(document.getElementById('income'));
-        var myChart2 = echarts.init(document.getElementById('interest'));
-        // 绘制收入图表
-        myChart1.setOption({
-            title: { text: '最近收入' },
-            tooltip: {},
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                data: ["3月","4月","5月","6月","7月","8月"]
-            },
-            yAxis: {},
-            series: [{
-                name: '收入',
-                type: 'bar',
-                data: [8000, 12000, 13600, 11000, 11000, 18000]
-            }]
-        });
-        // 绘制兴趣图表
-        myChart2.setOption({
-            title: { text: '兴趣爱好' },
-            series : [
-                {
-                    name: '兴趣',
-                    type: 'pie',
-                    radius: '55%',
-                    data:[
-                        {value:500, name:'吃饭'},
-                        {value:250, name:'睡觉'},
-                        {value:100, name:'打豆豆'},
-                        {value:100, name:'看电影'},
-                        {value:50, name:'其他'}
-                    ]
-                }
-            ]
-        })
+        
 
    },
   methods: {
@@ -265,7 +215,7 @@ export default {
     }
 
     .el-form-item{
-      margin-bottom: 0;
+      margin-bottom: 10px;
     }
     .avatar-uploader{
       margin-bottom: 32px;
