@@ -169,20 +169,20 @@
                 { required: true, message: '请选择日期', trigger: 'blur' },
                 // { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
               ],
-              // companyIncome:[
-              //   { required: true, message: '请输入公司入款', trigger: 'blur' },
-              // ],
-              // onlinePay:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // manualDeposit:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // manualDeductions:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // expendTotal:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // prepaidUser:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // drawingsUsr:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // watercourse:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // downProfit:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // depositDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // activityDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
-              // returnMoney:{ required: true, message: '不能为空！', trigger: 'blur' },
+              companyIncome:[
+                { required: true, message: '请输入公司入款', trigger: 'blur' },
+              ],
+              onlinePay:{ required: true, message: '不能为空！', trigger: 'blur' },
+              manualDeposit:{ required: true, message: '不能为空！', trigger: 'blur' },
+              manualDeductions:{ required: true, message: '不能为空！', trigger: 'blur' },
+              expendTotal:{ required: true, message: '不能为空！', trigger: 'blur' },
+              prepaidUser:{ required: true, message: '不能为空！', trigger: 'blur' },
+              drawingsUsr:{ required: true, message: '不能为空！', trigger: 'blur' },
+              watercourse:{ required: true, message: '不能为空！', trigger: 'blur' },
+              downProfit:{ required: true, message: '不能为空！', trigger: 'blur' },
+              depositDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
+              activityDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
+              returnMoney:{ required: true, message: '不能为空！', trigger: 'blur' },
 
               
             }

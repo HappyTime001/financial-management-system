@@ -19,23 +19,7 @@
             </router-link>
 
             
-            <el-submenu index="系统设置" v-if="routes['/systemSet/permissionsManage'] || routes['/systemSet/loginLog']"> 
-                <template slot="title">
-                    <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 系统设置
-                </template>
-              
-                    <router-link  class="menu-indent" to="/systemSet/permissionsManage" v-if="routes['/systemSet/permissionsManage']">
-                        <el-menu-item index="/systemSet/permissionsManage">
-                            权限管理
-                        </el-menu-item>
-                    </router-link>
-                    <router-link  class="menu-indent" to="/systemSet/loginLog" v-if="routes['/systemSet/loginLog']">
-                        <el-menu-item index="/systemSet/loginLog">
-                            登录日志
-                        </el-menu-item>
-                    </router-link>
-               
-            </el-submenu>
+            
 
             <el-submenu index="数据管理" v-if="routes['/financialManage/financialList'] || routes['/financialManage/financialEchart']"> 
                 <template slot="title">
@@ -68,6 +52,24 @@
                             账号列表
                         </el-menu-item>
                     </router-link>
+            </el-submenu>
+
+            <el-submenu index="系统管理" v-if="routes['/systemSet/permissionsManage'] || routes['/systemSet/loginLog']"> 
+                <template slot="title">
+                    <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 系统管理
+                </template>
+              
+                    <!-- <router-link  class="menu-indent" to="/systemSet/permissionsManage" v-if="routes['/systemSet/permissionsManage']">
+                        <el-menu-item index="/systemSet/permissionsManage">
+                            权限管理
+                        </el-menu-item>
+                    </router-link> -->
+                    <router-link  class="menu-indent" to="/systemSet/loginLog" v-if="routes['/systemSet/loginLog']">
+                        <el-menu-item index="/systemSet/loginLog">
+                            操作记录
+                        </el-menu-item>
+                    </router-link>
+               
             </el-submenu>
 
         </template>    

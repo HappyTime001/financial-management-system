@@ -52,43 +52,43 @@
               {{scope.row.financialDate | formatDate}}
             </template>
           </el-table-column>
-          <el-table-column label="公司入款" width="">
+          <el-table-column label="公司入款" min-width="100px">
             <template scope="scope">
               {{scope.row.companyIncome | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="线上支付" width="">
+          <el-table-column label="线上支付" min-width="100px">
             <template scope="scope">
               {{scope.row.onlinePay | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="人工存入" width="">
+          <el-table-column label="人工存入" min-width="100px">
             <template scope="scope">
               {{scope.row.manualDeposit | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="充值合计" width="">
+          <el-table-column label="充值合计" min-width="100px">
             <template scope="scope">
               {{scope.row.rechargeTotal | numberToFixed2}}
             </template>
           </el-table-column>
 
-          <el-table-column label="ARPPU" width="">
+          <el-table-column label="ARPPU" >
             <template scope="scope">
               {{scope.row.ARPPU | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="人工扣款" width="">
+          <el-table-column label="人工扣款" min-width="100px">
             <template scope="scope">
               {{scope.row.manualDeductions | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="出款金额" width="">
+          <el-table-column label="出款金额" min-width="100px">
             <template scope="scope">
               {{scope.row.expendTotal | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="充提差" width="">
+          <el-table-column label="充提差" min-width="100px">
             <template scope="scope">
               {{scope.row.rechargeBalance | numberToFixed2}}
             </template>
@@ -104,33 +104,33 @@
               {{scope.row.drawingsUsr | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="流水" width="">
+          <el-table-column label="流水" min-width="100px">
             <template scope="scope">
               {{scope.row.watercourse | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="损益" width="">
+          <el-table-column label="损益" min-width="100px">
             <template scope="scope">
               {{scope.row.downProfit | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="净利润" width="">
+          <el-table-column label="净利润" min-width="100px">
             <template scope="scope">
               {{scope.row.upProfits | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="存款优惠" width="">
+          <el-table-column label="存款优惠" min-width="100px">
             <template scope="scope">
               {{scope.row.depositDiscounts | numberToFixed2}}
             </template>
           </el-table-column>
 
-          <el-table-column label="活动优惠" width="">
+          <el-table-column label="活动优惠" min-width="100px">
             <template scope="scope">
               {{scope.row.activityDiscounts | numberToFixed2}}
             </template>
           </el-table-column>
-          <el-table-column label="日返水" width="">
+          <el-table-column label="日返水" min-width="100px">
             <template scope="scope">
               {{scope.row.returnMoney | numberToFixed2}}
             </template>

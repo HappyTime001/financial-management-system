@@ -57,7 +57,7 @@ const constantRouterMap = [
   {
     path: '/',
     //component: Layout,
-    redirect: '/index/readme',  //重定向到默认首页
+    redirect: '/index/personalInfo',  //重定向到默认首页
    
     hidden: true,
     
@@ -69,19 +69,12 @@ const constantRouterMap = [
     name: '',
     // icon: 'EXCEL',
     noDropdown: true,
-    children: [{ path: 'readme', component: Readme, name: '系统说明' }]
-  },
-  {
-    path: '/index',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '',
-    // icon: 'EXCEL',
-    noDropdown: true,
     children: [
-      { path: 'personalInfo', component: PersonalInfo, name: '个人信息' ,children:[{path:"/bb"}] }
+        { path: 'readme', component: Readme, name: '系统说明' },
+        { path: 'personalInfo', component: PersonalInfo, name: '个人信息' }
     ]
   },
+  
 
   {
     path: '/errorpage',

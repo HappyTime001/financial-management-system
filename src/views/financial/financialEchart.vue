@@ -235,7 +235,7 @@ export default {
         vm.chartLine.setOption({
             //标题组件，包含主标题和副标题。
             title: {
-                text: '财务情况'
+                // text: '财务情况'
             },
             //提示框组件。
             tooltip: {
@@ -243,13 +243,37 @@ export default {
             },
             //图例组件。
             legend: {
-                data: ['公司入款','线上支付', '人工存入'], //配置项可设置颜色
+                type: 'scroll',
+                // show: false,
+                left: '20px',
+                top: '5px',
+                // orient: 'vertical',//纵向
+                // selectedMode: 'multiple',
+                
+                data: [
+                    '公司入款','线上支付', '人工存入','充值合计','ARPPU',
+                    '人工扣款','出款金额', '充提差','流水','损益',
+                    '净利润','存款优惠', '活动优惠','日返水',
+                ], //配置项可设置颜色
                 selected: {
-                    // 选中'系列1'
                     '公司入款': true,
-                    // 不选中'系列2'
                     '线上支付': false,
                     '人工存入': false,
+                    '充值合计': false,
+                    'ARPPU': false,
+
+                    '人工扣款': false,
+                    '出款金额': false,
+                    '充提差': false,
+                    '流水': false,
+                    '损益': false,
+
+                    '净利润': false,
+                    '存款优惠': false,
+                    '活动优惠': false,
+                    '日返水': false,
+                    
+
                 }
             },
             //直角坐标系内绘图网格
@@ -279,27 +303,100 @@ export default {
                 {
                     name: '公司入款',
                     type: 'line',
-                    // stack: '总量',     //数据堆叠，
                     smooth: true,       //是否平滑曲线显示。
-                    data: seriesData[0]
-                    //[170, 100, 101, 80, 200, 230, 220]
+                    data: seriesData.companyIncome
+                    
                 },
                 {
                     name: '线上支付',
                     type: 'line',
-                    // stack: '总量',
                     smooth: true,
-                    data: seriesData[1]
-                    //[320, 332, 302, 234, 390, 330, 430]
+                    data: seriesData.onlinePay
                 },
                 {
                     name: '人工存入',
                     type: 'line',
-                    // stack: '总量',
                     smooth: true,
-                    data: seriesData[2]
-                    //[150, 232, 201, 154, 190, 100, 210]
-                }
+                    data: seriesData.manualDeposit
+                },
+                {
+                    name: '充值合计',
+                    type: 'line',
+                    smooth: true,       
+                    data: seriesData.rechargeTotal
+                    
+                },
+                {
+                    name: 'ARPPU',
+                    type: 'line',
+                    smooth: true,
+                    data: seriesData.ARPPU
+                },
+
+
+
+                {
+                    name: '人工扣款',
+                    type: 'line',
+                    smooth: true,       //是否平滑曲线显示。
+                    data: seriesData.manualDeductions
+                    
+                },
+                {
+                    name: '出款金额',
+                    type: 'line',
+                    smooth: true,
+                    data: seriesData.expendTotal
+                },
+                {
+                    name: '充值差',
+                    type: 'line',
+                    smooth: true,
+                    data: seriesData.rechargeBalance
+                },
+                {
+                    name: '流水',
+                    type: 'line',
+                    smooth: true,       
+                    data: seriesData.watercourse
+                    
+                },
+                {
+                    name: '损益',
+                    type: 'line',
+                    smooth: true,
+                    data: seriesData.downProfit
+                },
+
+                {
+                    name: '净利润',
+                    type: 'line',
+                    smooth: true,       //是否平滑曲线显示。
+                    data: seriesData.upProfits
+                    
+                },
+                {
+                    name: '存款优惠',
+                    type: 'line',
+                    smooth: true,
+                    data: seriesData.depositDiscounts
+                },
+                {
+                    name: '活动优惠',
+                    type: 'line',
+                    smooth: true,
+                    data: seriesData.activityDiscounts
+                },
+                {
+                    name: '日返水',
+                    type: 'line',
+                    smooth: true,       
+                    data: seriesData.returnMoney
+                    
+                },
+                
+
+
             ]
         });
     },
@@ -309,31 +406,51 @@ export default {
         let listData = vm.list;
         console.log('列表数据：',listData);
 
-        // let dateArray = [],                     //时间
-        //     companyIncomeValue = [],             //公司入款
-        //     onlinePayValue = [];
-        let [dateArray,companyIncomeValue,onlinePayValue,manualDepositValue,seriesData]=[[],[],[],[],[],];
+        let seriesData = {
+
+            financialDate : [],             //时间
+
+            companyIncome : [],         //公司入款
+            onlinePay : [],             //线上支付
+            manualDeposit : [],         //人工存入
+            rechargeTotal : [],         //充值合计
+            ARPPU : [],                 //ARPPU
+
+            manualDeductions : [],         //人工扣款
+            expendTotal : [],             //出款金额
+            rechargeBalance : [],         //充提差
+            watercourse : [],           //流水
+            downProfit : [],                 //损益
+
+            upProfits : [],                 //净利润
+            depositDiscounts : [],             //存款优惠
+            activityDiscounts : [],         //活动优惠
+            returnMoney : []               //日返水
+        
+        };
+        // let financialDate,companyIncome,onlinePay,manualDeposit=[[],[],[],[],];
+         
 
         for(var index in listData){
-            //时间
-            dateArray.push(listData[index]['financialDate'])
-
-            //数据
-            companyIncomeValue.push(listData[index]['companyIncome'])
-            onlinePayValue.push(listData[index]['onlinePay'])
-            manualDepositValue.push(listData[index]['manualDeposit'])
-
+            for(var key in seriesData){  
+                // alert(key); 
+                seriesData[key].push(listData[index][key])
+            }
+            // //时间
+            // seriesData.financialDate.push(listData[index]['financialDate'])
+            // //数据
+            // seriesData.companyIncome.push(listData[index]['companyIncome'])
+            // seriesData.onlinePay.push(listData[index]['onlinePay'])
+            // seriesData.manualDeposit.push(listData[index]['manualDeposit'])
         }
         //集成在到seriesData中
-        seriesData[0] = companyIncomeValue;
-        seriesData[1] = onlinePayValue;
-        seriesData[2] = manualDepositValue;
-
-        console.log('时间：',dateArray);
+        // seriesData.companyIncome = companyIncome;
+        // seriesData.onlinePay    = onlinePay;
+        // seriesData.manualDeposit = manualDeposit;
+        
         console.log('seriesData：',seriesData);
-
         //数据转换完，进行图表绘制，传参
-        vm.drawLineChart(dateArray,seriesData)
+        vm.drawLineChart(seriesData.financialDate,seriesData)
 
     },
     //获取列表数据

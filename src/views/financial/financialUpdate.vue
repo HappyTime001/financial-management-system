@@ -284,7 +284,7 @@
                           })
                           setTimeout(()=>{
                               
-                              //vm.$router.push('/financialManage/financialList')
+                              vm.$router.push('/financialManage/financialList')
                           },2000)
                       },function(res){
                           alert('插入数据失败，接口返回的数据为：',res)
