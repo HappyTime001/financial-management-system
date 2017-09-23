@@ -57,7 +57,7 @@ const constantRouterMap = [
   {
     path: '/',
     //component: Layout,
-    redirect: '/index/personalInfo',  //重定向到默认首页
+    redirect: '/financialManage/financialList',  //重定向到默认首页
    
     hidden: true,
     

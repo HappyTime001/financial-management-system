@@ -11,12 +11,12 @@
                 </el-menu-item>
             </router-link> -->
 
-            <router-link  to="/index/personalInfo"  v-if="routes['/index/personalInfo']" >
+            <!-- <router-link  to="/index/personalInfo"  v-if="routes['/index/personalInfo']" >
                 <el-menu-item index="/index/personalInfo">
                     <i class="fa fa-home" aria-hidden="true"></i> 首页
             
                 </el-menu-item>
-            </router-link>
+            </router-link> -->
 
             
             
@@ -54,23 +54,19 @@
                     </router-link>
             </el-submenu>
 
-            <el-submenu index="系统管理" v-if="routes['/systemSet/permissionsManage'] || routes['/systemSet/loginLog']"> 
+            <!-- <el-submenu index="系统管理" v-if="routes['/systemSet/permissionsManage'] || routes['/systemSet/loginLog']"> 
                 <template slot="title">
                     <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 系统管理
                 </template>
               
-                    <!-- <router-link  class="menu-indent" to="/systemSet/permissionsManage" v-if="routes['/systemSet/permissionsManage']">
-                        <el-menu-item index="/systemSet/permissionsManage">
-                            权限管理
-                        </el-menu-item>
-                    </router-link> -->
+                    
                     <router-link  class="menu-indent" to="/systemSet/loginLog" v-if="routes['/systemSet/loginLog']">
                         <el-menu-item index="/systemSet/loginLog">
                             操作记录
                         </el-menu-item>
                     </router-link>
                
-            </el-submenu>
+            </el-submenu> -->
 
         </template>    
         

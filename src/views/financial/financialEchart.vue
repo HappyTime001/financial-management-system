@@ -349,7 +349,7 @@ export default {
                     data: seriesData.expendTotal
                 },
                 {
-                    name: '充值差',
+                    name: '充提差',
                     type: 'line',
                     smooth: true,
                     data: seriesData.rechargeBalance

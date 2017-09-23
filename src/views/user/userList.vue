@@ -38,7 +38,8 @@
 
           <el-table-column label="角色" width="">
             <template scope="scope">
-              {{scope.row.role | roleFilterTip}}
+                {{scope.row.role | roleFilterTip}}
+              
             </template>
           </el-table-column>
 
@@ -264,7 +265,7 @@ export default {
   filters: {
       roleFilterTip(role) {
           const roleMap = ['超级管理员', '管理员', '一般会员'];
-          return roleMap[role - 1];
+          return roleMap[role - 10010];
       }
   },
   mounted() {

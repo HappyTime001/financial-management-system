@@ -4,7 +4,7 @@
             
             <i class="fa fa-bars" @click="toggleSideBar" :isActive="sidebar.opened"></i>
            
-            <tabs-view></tabs-view>
+            <!-- <tabs-view></tabs-view> -->
             
             <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
             <screenfull class='screenfull'></screenfull>
