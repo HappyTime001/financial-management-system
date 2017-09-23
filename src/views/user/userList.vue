@@ -172,15 +172,14 @@ export default {
   data() {
     const validateUserName = (rule, value, callback) => {
         let vm = this;
-        vm.isExistUser();
-        setTimeout(function() {  
-            console.log("userExisting===", vm.userExisting);
-            if (vm.userExisting == true) {
-                callback(new Error('账户已经存在， 请重新输入'));
-            } else {
+        vm.isExistUser(value, function(result){
+            if(!result){
+                //此处，需要交给接口校验账户名是否重复
+                callback(new Error('用户名重复， 请重新输入'));
+            }else{
                 callback();
-            } 
-        }, 1300); 
+            }
+        });
     }
     const validateNewPassword2 = (rule, value, callback) => {
         if (value !== this.passwordForm.newPassword) {
@@ -210,7 +209,6 @@ export default {
             userName: ''
         },
         userQueryList: [],
-        userExisting: false,
 
         userRoles: [{value : "10010", label : "超级管理员"}, {value : "10011", label : "管理员"}, {value : "10012", label : "一般会员"}],
         passwordType: 'password',
@@ -468,19 +466,19 @@ export default {
         this.dialogFormVisible = true;
     },
     //新增时验证账户是否重复
-    isExistUser(){
+    isExistUser(value, callback){
         let vm = this;
-        vm.userQuery.userName = vm.temp.userName;
+        vm.userQuery.userName = value;
         global.get( api.existUser, { params: vm.userQuery },function(res){
             console.log('userQueryList列表数据：',res);
             let data = res.body;
             if(data.resultCode == 0){ 
                 vm.userQueryList = data.data;
                 if(vm.userQueryList.length > 0){
-                  vm.userExisting = true;
+                  callback(false);
                   return;
                 }
-                vm.userExisting = false;
+                callback(true);
             }else{
                 Message({
                     showClose: true,
