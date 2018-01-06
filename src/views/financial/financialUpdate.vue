@@ -100,7 +100,7 @@
       
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
       </el-form-item>
     </el-form>
 </div>
@@ -172,17 +172,17 @@
               companyIncome:[
                 { required: true, message: '请输入公司入款', trigger: 'blur' },
               ],
-              onlinePay:{ required: true, message: '不能为空！', trigger: 'blur' },
-              manualDeposit:{ required: true, message: '不能为空！', trigger: 'blur' },
-              manualDeductions:{ required: true, message: '不能为空！', trigger: 'blur' },
-              expendTotal:{ required: true, message: '不能为空！', trigger: 'blur' },
-              prepaidUser:{ required: true, message: '不能为空！', trigger: 'blur' },
-              drawingsUsr:{ required: true, message: '不能为空！', trigger: 'blur' },
-              watercourse:{ required: true, message: '不能为空！', trigger: 'blur' },
-              downProfit:{ required: true, message: '不能为空！', trigger: 'blur' },
-              depositDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
-              activityDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
-              returnMoney:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // onlinePay:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // manualDeposit:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // manualDeductions:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // expendTotal:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // prepaidUser:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // drawingsUsr:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // watercourse:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // downProfit:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // depositDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // activityDiscounts:{ required: true, message: '不能为空！', trigger: 'blur' },
+              // returnMoney:{ required: true, message: '不能为空！', trigger: 'blur' },
 
               
             }
@@ -298,7 +298,7 @@
               });
             },
             resetForm(formName) {
-              this.$refs[formName].resetFields();
+              // this.$refs[formName].resetFields();
               // 等同于
               // this.ruleForm = {
               //   name: '',
