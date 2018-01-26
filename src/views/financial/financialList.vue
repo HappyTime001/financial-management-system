@@ -22,7 +22,7 @@
       <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit" v-if=" userInfo.baseInfo.role == '10010' ">批量删除</el-button>
       <el-button class="filter-item" type="primary" icon="document" @click="handleDownload" v-if=" userInfo.baseInfo.role == '10010' ">导出</el-button>
       
-      <el-upload class="upload-demo" v-if=" userInfo.baseInfo.role == '10010' || userInfo.baseInfo.role == '10011' " action="http://localhost:3000/api/importFinancialExcel" 
+      <el-upload class="upload-demo" v-if=" userInfo.baseInfo.role == '10010' || userInfo.baseInfo.role == '10011' " :action="importFinancialExcel" 
             :on-change="handleChange" 
             :show-file-list="showFileList"
             :on-progress="handleProgress"
@@ -202,6 +202,7 @@ import financialList from 'src/global/financialList';
 export default {
     data() {
         return {
+            importFinancialExcel: api.importFinancialExcel,
             showFileList:false,
             dateEditable:false,
             pickerOptions2: {

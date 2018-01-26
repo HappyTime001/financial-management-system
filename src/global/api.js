@@ -17,7 +17,8 @@ let url = {
 
 //----------------请注意：如果正式环境，不需要本地json数据模拟，请删除以上代码和api中的模拟接口。----------------
 
-let nodeApiBaseUrl = 'http://localhost:3000';
+// let nodeApiBaseUrl = 'http://localhost:3000'; //http://60.205.209.210:3000
+let nodeApiBaseUrl = 'http://60.205.209.210:80'; //http://60.205.209.210:3000
 
 export const api = {
 
@@ -47,6 +48,8 @@ export const api = {
             "financialList": nodeApiBaseUrl+"/api/financialListQuery",      //财务信息列表
             "financialDel": nodeApiBaseUrl+"/api/financialDel",             //财务信息删除
             "financialItemQuery": nodeApiBaseUrl+"/api/queryFinancialItem",     //财务单条详情
+            "importFinancialExcel": nodeApiBaseUrl+"/api/importFinancialExcel",     //财务导入
+            
 
             //用户管理接口
             'userList' : nodeApiBaseUrl + '/api/queryUser', //用户信息列表
