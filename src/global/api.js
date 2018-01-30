@@ -18,7 +18,7 @@ let url = {
 //----------------请注意：如果正式环境，不需要本地json数据模拟，请删除以上代码和api中的模拟接口。----------------
 
 // let nodeApiBaseUrl = 'http://localhost:3000'; //http://60.205.209.210:3000
-let nodeApiBaseUrl = 'http://60.205.209.210:80'; //http://60.205.209.210:3000
+let nodeApiBaseUrl = 'http://60.205.209.210:3000'; //http://60.205.209.210:3000
 
 export const api = {
 
