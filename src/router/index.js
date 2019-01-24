@@ -36,6 +36,9 @@ const FinancialAdd = _import('financial/financialAdd');
 const FinancialUpdate = _import('financial/financialUpdate');
 const FinancialEchart = _import('financial/financialEchart');
 
+/*抽奖管理*/
+const MemberManage = _import('lottery/memberManage')
+
 Vue.use(Router);
 
  /**
@@ -116,9 +119,21 @@ const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: 'noredirect',
-    name: '用户管理',
+    name: '账号管理',
     children: [
-      { path: 'userList', component: UserList, name: '用户列表' } 
+      { path: 'userList', component: UserList, name: '账号列表' } 
+    ]
+  },
+
+  {
+    path: '/lottery',
+    component: Layout,
+    redirect: 'noredirect',
+    name: '抽奖管理',
+    children: [
+      { path: 'memberManage', component: MemberManage, name: '会员管理' },
+      { path: 'lotteryRecord', component: MemberManage, name: '抽奖记录' },
+      { path: 'lotteryTest', component: MemberManage, name: '抽奖测试' },
     ]
   },
   

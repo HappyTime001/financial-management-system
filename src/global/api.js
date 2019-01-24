@@ -17,8 +17,8 @@ let url = {
 
 //----------------请注意：如果正式环境，不需要本地json数据模拟，请删除以上代码和api中的模拟接口。----------------
 
-// let nodeApiBaseUrl = 'http://localhost:3000'; //http://60.205.209.210:3000
-let nodeApiBaseUrl = 'http://60.205.209.210:3000'; //http://60.205.209.210:3000
+let nodeApiBaseUrl = 'http://localhost:3000'; //http://60.205.209.210:3000
+//let nodeApiBaseUrl = 'http://60.205.209.210:3000'; //http://60.205.209.210:3000
 
 export const api = {
 
@@ -65,6 +65,13 @@ export const api = {
             'validatePassword':nodeApiBaseUrl+'/api/validatePassword',//校验密码
             'modifyPassword':nodeApiBaseUrl+'/api/modifyPassword',//校验密码
 
+            //抽奖管理接口
+            "financialAdd": nodeApiBaseUrl+"/api/financialAdd",             //财务信息添加
+            "financialUpdate": nodeApiBaseUrl+"/api/financialUpdate",       //财务信息修改
+            "financialList": nodeApiBaseUrl+"/api/financialListQuery",      //财务信息列表
+            "financialDel": nodeApiBaseUrl+"/api/financialDel",             //财务信息删除
+            "financialItemQuery": nodeApiBaseUrl+"/api/queryFinancialItem",     //财务单条详情
+            "importMemberExcel": nodeApiBaseUrl+"/api/importMemberExcel",     //会员资料导入
 
             '0':url.apiUrl+'',//获取科室接口
             '1':url.apiUrl+'',

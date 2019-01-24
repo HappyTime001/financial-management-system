@@ -1,0 +1,25 @@
+财务表（每个表，前面三个字段不能为空）
+
+字段名称：
+主键						_id	
+创建时间					createDate
+修改时间					updateDate
+
+
+时间				date	not empty	financialDate
+公司入款			float 	not empty	companyIncome
+线上支付			float	not empty	onlinePay
+人工存入					not empty	manualDeposit
+充值合计					not empty	rechargeTotal		公司入款+线上支付+人工存入
+ARPPU						not empty	ARPPU				充值合计/唯一充值用户
+人工扣款					not empty	manualDeductions
+出款金额					not empty	expendTotal
+充提差						not empty	rechargeBalance		充值合计-出款金额
+唯一充值用户		number	not empty	prepaidUser
+唯一提款用户		number	not empty	drawingsUsr
+流水						not empty	watercourse
+损益						not empty	downProfit
+净利润						not empty	upProfits			损益 - 存款优惠 - 活动优惠 - 日返水			
+存款优惠					not empty	depositDiscounts
+活动优惠					not empty	activityDiscounts
+日返水						not empty	returnMoney

@@ -54,6 +54,28 @@
                     </router-link>
             </el-submenu>
 
+            <el-submenu index="账号管理" >
+            
+                <template slot="title">
+                    <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 抽奖管理
+                </template>
+                    <router-link  class="menu-indent" to="/lottery/memberManage" >
+                        <el-menu-item index="/lottery/memberManage">
+                            会员管理
+                        </el-menu-item>
+                    </router-link>
+                    <router-link  class="menu-indent" to="/lottery/lotteryRecord" >
+                        <el-menu-item index="/lottery/lotteryRecord">
+                            抽奖记录
+                        </el-menu-item>
+                    </router-link>
+                    <router-link  class="menu-indent" to="/lottery/lotteryTest" >
+                        <el-menu-item index="/lottery/lotteryTest">
+                            抽奖测试
+                        </el-menu-item>
+                    </router-link>
+            </el-submenu>
+
             <!-- <el-submenu index="系统管理" v-if="routes['/systemSet/permissionsManage'] || routes['/systemSet/loginLog']"> 
                 <template slot="title">
                     <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 系统管理
