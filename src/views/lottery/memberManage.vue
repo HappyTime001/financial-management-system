@@ -36,37 +36,41 @@
    
     <!-- 表格 -->
     <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row  >
-         <el-table-column type="selection" width="65">
-         </el-table-column>
+         <!-- <el-table-column type="selection" width="65">
+         </el-table-column> -->
 
-          <el-table-column align="center" label='序号' width="">
+          <el-table-column align="center" label='序号' width="100px">
             <template scope="scope">
               {{scope.$index+1}}
             </template>
           </el-table-column>
 
-          <el-table-column label="账号" width="">
+          <el-table-column label="用户名" width="">
             <template scope="scope">
               {{scope.row.userName}}
             </template>
           </el-table-column>
 
-          <el-table-column label="姓名" width="">
+          <el-table-column label="红包金额" width="">
             <template scope="scope">
-              {{scope.row.nickname}}
+              {{scope.row.money}}
             </template>
           </el-table-column>
 
-          <el-table-column label="角色" width="">
+          <el-table-column label="爆竹个数" width="">
             <template scope="scope">
-                {{scope.row.role | roleFilterTip}}
-              
+              {{scope.row.firecrackerNumber}}
             </template>
           </el-table-column>
 
-          <el-table-column label="备注" width="">
+          <el-table-column label="日期" width="">
             <template scope="scope">
-              {{scope.row.remark}}
+              {{scope.row.recordDate | formatDate }}
+            </template>
+          </el-table-column>
+          <el-table-column label="是否领取红包" width="">
+            <template scope="scope">
+              {{scope.row.isBonus}}
             </template>
           </el-table-column>
 
@@ -126,29 +130,34 @@
 
     <!-- 编辑弹窗 -->
     <el-dialog title="编辑信息" :visible.sync="dialogRuleFormVisible">
-          <el-form class="small-space" :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="80px" style='width: 420px; margin-left:50px;'>
+          <el-form class="small-space" :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="120px" style='width: 420px; margin-left:50px;'>
 
-            <el-form-item label="账号">
-              <el-input v-model="ruleForm.userName" readonly></el-input>
+            <el-form-item label="用户名">
+              <!-- <el-input v-model="ruleForm.userName" readonly></el-input> -->
+              {{ruleForm.userName}}
             </el-form-item>
 
-            <el-form-item label="姓名">
-              <el-input v-model="ruleForm.nickname"></el-input>
+            <el-form-item label="红包金额">
+              <el-input v-model="ruleForm.money"></el-input>
+            </el-form-item>
+            <el-form-item label="爆竹个数">
+              <el-input v-model="ruleForm.firecrackerNumber"></el-input>
+            </el-form-item>
+            <el-form-item label="日期">
+              <!-- <el-input v-model="ruleForm.recordDate" readonly></el-input> -->
+              {{ruleForm.recordDate | formatDate}}
             </el-form-item>
 
-            <el-form-item label="用户权限" prop="role">
+            <el-form-item label="是否领取红包" prop="role">
                 <el-col :span="10" >
-                    <el-select v-model="ruleForm.role" placeholder="用户权限"  >
+                    <el-select v-model="ruleForm.isBonus" placeholder=""  >
                        <el-option v-for="item in  userRoles" :key="item.value" :label="item.label" :value="item.value">
                        </el-option>
                     </el-select>
                  </el-col>
             </el-form-item>
 
-            <el-form-item label="备注">
-              <el-input v-model="ruleForm.remark"></el-input>
-            </el-form-item>
-           
+            
           </el-form>
 
           <div slot="footer" class="dialog-footer">
@@ -188,6 +197,7 @@ import { Message } from 'element-UI';
 import { global } from '@/global/global';
 import { api } from '@/global/api';
 import md5 from 'blueimp-md5';
+import {formatDate} from '@/filters/index';
 
 export default {
   data() {
@@ -262,10 +272,10 @@ export default {
         },
         userQueryList: [],
 
-        userRoles: [{value : "10010", label : "超级管理员"}, {value : "10011", label : "管理员"}, {value : "10012", label : "一般会员"}],
+        userRoles: [{value : "是", label : "是"}, {value : "否", label : "否"}],
         passwordType: 'password',
         rules: {
-          userName: [
+          /*userName: [
             { required: true, message: '请输入账号', trigger: 'blur' },
             { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' },
             { required: true, trigger: 'blur' , validator: validateUserName}
@@ -276,7 +286,7 @@ export default {
           ],
           role: [
             { required: true, message: '请选择用户权限', trigger: 'change' }
-          ]
+          ]*/
         },
         //新增弹窗表单可见
         dialogFormVisible: false,
@@ -367,7 +377,19 @@ export default {
     getList() {
         let vm = this;
         vm.listLoading = true;
-        global.get( api.userList, { params: vm.listQuery },function(res){
+
+        let par = vm.listQuery;
+        console.log('入参1：',par)
+        if(par.queryDate){
+            let beginDate = formatDate(par.queryDate[0]);
+            let endDate = formatDate(par.queryDate[1]);
+            par.beginDate = beginDate;
+            par.endDate = endDate;
+        }
+
+        console.log('入参2：',par)
+
+        global.get( api.memberList, { params: par },function(res){
                 // console.log('获取到数据-------：',JSON.stringify(res) )
                 let data = res.body;
                if(data.resultCode == 0){ 
@@ -403,7 +425,7 @@ export default {
     //根据id查询表单数据
     getFormData (id){
         var vm = this;
-        global.get( api.queryUserItem, { params:{ 'id': id } }, function(res){
+        global.get( api.queryMemberItem, { params:{ 'id': id } }, function(res){
             console.log('-------根据id获取表单信息：',JSON.stringify(res) )
             if(res.body.resultCode == 0){
                 var res = res.body.data;
@@ -428,15 +450,16 @@ export default {
         this.$refs[formName].validate((valid) => {
             if (valid) {
                 console.log('提交入参：',this.ruleForm);
-                global.post( api.modifyUser, this.ruleForm, null, function(res){
+                global.post( api.modifyMember, this.ruleForm, null, function(res){
                     Message({
                         showClose: true,
-                        message: '提交成功，正在跳转页面……',
+                        message: '提交成功',
                         type: 'success'
                     })
-                    setTimeout(()=>{
+                    vm.getList();
+                    /*setTimeout(()=>{
                         vm.getList();
-                    },2000)
+                    },2000)*/
                 },function(res){
                     alert('插入数据失败，接口返回的数据为：',res)
                 })

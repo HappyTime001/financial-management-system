@@ -66,12 +66,10 @@ export const api = {
             'modifyPassword':nodeApiBaseUrl+'/api/modifyPassword',//校验密码
 
             //抽奖管理接口
-            "financialAdd": nodeApiBaseUrl+"/api/financialAdd",             //财务信息添加
-            "financialUpdate": nodeApiBaseUrl+"/api/financialUpdate",       //财务信息修改
-            "financialList": nodeApiBaseUrl+"/api/financialListQuery",      //财务信息列表
-            "financialDel": nodeApiBaseUrl+"/api/financialDel",             //财务信息删除
-            "financialItemQuery": nodeApiBaseUrl+"/api/queryFinancialItem",     //财务单条详情
-            "importMemberExcel": nodeApiBaseUrl+"/api/importMemberExcel",     //会员资料导入
+            'memberList': nodeApiBaseUrl+'/api/v2/queryMember',             //财务信息添加
+            'queryMemberItem': nodeApiBaseUrl + '/api/v2/queryMemberItem',
+            'modifyMember': nodeApiBaseUrl + '/api/v2/modifyMember',
+            'importMemberExcel': nodeApiBaseUrl+'/api/importMemberExcel',     //会员资料导入
 
             '0':url.apiUrl+'',//获取科室接口
             '1':url.apiUrl+'',

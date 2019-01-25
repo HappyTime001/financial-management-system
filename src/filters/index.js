@@ -6,6 +6,9 @@ export function numberToFixed2(value){
 
 // 时间过滤器，转为2017-7-7
 export function formatDate(time){
+    if(!time){
+      return ''
+    }
     let _year = new Date(time).getFullYear(),
         _month = new Date(time).getMonth()+1,
         _date = new Date(time).getDate();
