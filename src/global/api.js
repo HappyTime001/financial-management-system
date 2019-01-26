@@ -66,10 +66,14 @@ export const api = {
             'modifyPassword':nodeApiBaseUrl+'/api/modifyPassword',//校验密码
 
             //抽奖管理接口
-            'memberList': nodeApiBaseUrl+'/api/v2/queryMember',             //财务信息添加
+            'memberList': nodeApiBaseUrl+'/api/v2/queryMember',             
             'queryMemberItem': nodeApiBaseUrl + '/api/v2/queryMemberItem',
             'modifyMember': nodeApiBaseUrl + '/api/v2/modifyMember',
             'importMemberExcel': nodeApiBaseUrl+'/api/importMemberExcel',     //会员资料导入
+            'lotteryRecordList': nodeApiBaseUrl+'/api/v2/queryLotteryRecord',
+            'lotteryType1': nodeApiBaseUrl+'/api/v2/lottery/type1',
+            'lotteryType2': nodeApiBaseUrl+'/api/v2/lottery/type2',
+
 
             '0':url.apiUrl+'',//获取科室接口
             '1':url.apiUrl+'',
