@@ -26,7 +26,7 @@
         </el-option>
       </el-select>
 
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">提交测试</el-button>
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">模拟抽奖测试提交</el-button>
 
       <div class="">
         <p>接口返回结果：</p>
@@ -123,7 +123,7 @@ export default {
   },
   mounted() {
     let vm = this;
-    vm.getList();
+    //vm.getList();
   },
   methods: {
     
@@ -131,9 +131,14 @@ export default {
     getList() {
         let vm = this;
         vm.listLoading = true;
+        vm.resResult = ''
 
         let par = vm.listQuery;
         console.log('入参1：',par)
+        if(!par.userName || !par.queryDate || !par.type){
+          alert('条件不能为空')
+          return false
+        }
         if(par.queryDate){
             let beginDate = formatDate(par.queryDate);
             
@@ -142,8 +147,9 @@ export default {
         }
 
         console.log('入参2：',par)
+        let _url = par.type == 1 ? api.lotteryType1:api.lotteryType2
 
-        global.get( api.lotteryType1, { params: par },function(res){
+        global.get( _url , { params: par },function(res){
                 // console.log('获取到数据-------：',JSON.stringify(res) )
                 let data = res.body;
                if(data.resultCode == 0){ 

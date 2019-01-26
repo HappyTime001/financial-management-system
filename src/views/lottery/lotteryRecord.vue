@@ -27,7 +27,7 @@
 
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
 
-      <!-- <el-button class="filter-item" type="primary" icon="document" @click="handleDownload" >导出</el-button> -->
+      <el-button class="filter-item" type="primary" icon="document" @click="handleDownload" >导出</el-button>
       
       <!-- <el-button class="filter-item" type="primary" @click="handleCreate"  icon="edit">添加</el-button>
       
@@ -577,6 +577,24 @@ export default {
                 return false;
             }
         });
+    },
+    //导出操作
+    handleDownload() {
+      let vm = this;
+
+      require.ensure([], () => {
+        const { export_json_to_excel } = require('vendor/Export2Excel');
+        const tHeader = ['用户名','红包金额','类型','时间'];
+        const filterVal = ['userName','money','type','createDate'];
+        const list = vm.list;
+        const data = vm.formatJson(filterVal, list);
+
+        let date = formatDate(new Date())
+        export_json_to_excel(tHeader, data, '导出的抽奖记录列表excel '+date);
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 };
