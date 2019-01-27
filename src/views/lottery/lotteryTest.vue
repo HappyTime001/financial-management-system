@@ -139,17 +139,18 @@ export default {
           alert('条件不能为空')
           return false
         }
-        if(par.queryDate){
+        //par.queryDate = new Date(par.queryDate)
+        /*if(par.queryDate){
             let beginDate = formatDate(par.queryDate);
             
             par.beginDate = beginDate;
             par.endDate = beginDate;
-        }
+        }*/
 
         console.log('入参2：',par)
         let _url = par.type == 1 ? api.lotteryType1:api.lotteryType2
 
-        global.get( _url , { params: par },function(res){
+        global.post( _url , par,null,function(res){
                 // console.log('获取到数据-------：',JSON.stringify(res) )
                 let data = res.body;
                if(data.resultCode == 0){ 
